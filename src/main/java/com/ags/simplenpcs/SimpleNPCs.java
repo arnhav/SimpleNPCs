@@ -6,7 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class SimpleNPCS extends JavaPlugin implements SimpleNPCService {
+public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
 
     private NPCManager npcManager;
 
@@ -25,8 +25,8 @@ public final class SimpleNPCS extends JavaPlugin implements SimpleNPCService {
         // Plugin shutdown logic
     }
 
-    public static SimpleNPCS instance(){
-        return SimpleNPCS.getPlugin(SimpleNPCS.class);
+    public static SimpleNPCs instance(){
+        return SimpleNPCs.getPlugin(SimpleNPCs.class);
     }
 
     @Override
