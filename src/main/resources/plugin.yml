@@ -1,0 +1,6 @@
+name: SimpleNPCS
+version: ${project.version}
+main: com.ags.simplenpcs.SimpleNPCS
+api-version: 1.17
+depend: [ ProtocolLib ]
+authors: [ Tyrriel ]
