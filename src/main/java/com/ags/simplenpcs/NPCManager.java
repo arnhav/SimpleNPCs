@@ -61,4 +61,10 @@ public class NPCManager {
         profile.setUniqueId(new UUID(this.random.nextLong(), 0));
         return profile;
     }
+
+    public Profile createProfile(String playerName){
+        Profile profile = new Profile(playerName);
+        profile.complete();
+        return profile;
+    }
 }
