@@ -3,7 +3,9 @@ package com.ags.simplenpcs.commands;
 import com.ags.simplenpcs.NPCManager;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.profile.Profile;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,16 +44,41 @@ public class CommandHandler implements CommandExecutor {
             if (args.length != 3) return false;
             Profile profile = npcManager.createProfile(args[1], args[2]);
             npcManager.addNPC(((Player) sender).getLocation(), profile);
+            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+args[2]+" created!"));
+        }
+
+        if (args[0].equalsIgnoreCase("delete")){
+            if (args.length != 1) return false;
+            NPC selected = NPCManager.selectedNPC.get(sender);
+            if (selected == null) return false;
+            npcManager.removeNPC(selected);
+            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+selected.getEntityId()+" deleted."));
         }
 
         if (args[0].equalsIgnoreCase("setskin")){
             if (args.length != 2) return false;
             NPC selected = NPCManager.selectedNPC.get(sender);
             if (selected == null) return false;
+            // TODO: Fill this out, for now it is to debug profile properties
             Profile profile = selected.getProfile();
             for (Profile.Property pr : profile.getProperties()){
                 System.out.println(pr.toString());
             }
+        }
+
+        if (args[0].equalsIgnoreCase("tphere")){
+            if (args.length != 1) return false;
+            NPC selected = NPCManager.selectedNPC.get(sender);
+            if (selected == null) return false;
+            // TODO: Figure out if it is possible to move NPC here
+        }
+
+        if (args[0].equalsIgnoreCase("info")){
+            if (args.length != 1) return false;
+            NPC selected = NPCManager.selectedNPC.get(sender);
+            if (selected == null) return false;
+            sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"--NPC Info--"));
+            sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"ID: "+selected.getEntityId()));
         }
 
         return true;
