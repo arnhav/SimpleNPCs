@@ -2,6 +2,7 @@ package com.ags.simplenpcs;
 
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.NPCPool;
+import com.github.juliarn.npc.modifier.MetadataModifier;
 import com.github.juliarn.npc.profile.Profile;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -30,12 +31,14 @@ public class NPCManager {
     }
 
     public void addNPC(Location location, Profile profile){
-        NPC.builder()
+        NPC npc= NPC.builder()
             .profile(profile)
             .location(location)
             .imitatePlayer(false)
             .lookAtPlayer(true)
             .build(this.npcPool);
+
+        npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true).send();
     }
 
     public void removeNPC(NPC npc){
