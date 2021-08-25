@@ -41,21 +41,21 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
 
     @Override
     public void createNPC(Profile p, Location l) {
-
+        npcManager.addNPC(l, p);
     }
 
     @Override
     public void deleteNPC(NPC n) {
-
+        npcManager.removeNPC(n);
     }
 
     @Override
     public void hideNPCFromPlayer(NPC n, Player p) {
-
+        npcManager.hideNPCForPlayer(n, p);
     }
 
     @Override
     public void showNPCToPlayer(NPC n, Player p) {
-
+        npcManager.showNPCForPlayer(n, p);
     }
 }
