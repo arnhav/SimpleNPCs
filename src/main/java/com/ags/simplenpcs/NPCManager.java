@@ -9,12 +9,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Random;
 import java.util.UUID;
+import java.util.WeakHashMap;
 
 public class NPCManager {
 
     private final NPCPool npcPool;
 
     private final Random random;
+
+    public static WeakHashMap<Player, NPC> selectedNPC = new WeakHashMap<>();
 
     public NPCManager(JavaPlugin plugin) {
         npcPool = NPCPool.builder(plugin)
