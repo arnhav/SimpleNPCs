@@ -1,5 +1,6 @@
 package com.ags.simplenpcs;
 
+import com.ags.simplenpcs.data.FileManager;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.NPCPool;
 import com.github.juliarn.npc.modifier.MetadataModifier;
@@ -37,8 +38,9 @@ public class NPCManager {
             .imitatePlayer(false)
             .lookAtPlayer(true)
             .build(this.npcPool);
-
         npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true).send();
+
+        FileManager.saveNPC(npc);
     }
 
     public void removeNPC(NPC npc){

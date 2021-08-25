@@ -2,6 +2,7 @@ package com.ags.simplenpcs;
 
 import com.ags.simplenpcs.api.SimpleNPCService;
 import com.ags.simplenpcs.commands.CommandHandler;
+import com.ags.simplenpcs.data.FileManager;
 import com.ags.simplenpcs.listeners.NPCListener;
 import org.bukkit.Location;
 import org.bukkit.plugin.ServicePriority;
@@ -19,6 +20,8 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
         getCommand("snpc").setExecutor(new CommandHandler(npcManager));
 
         getServer().getPluginManager().registerEvents(new NPCListener(), this);
+
+        new FileManager(this);
 
         getServer().getServicesManager().register(SimpleNPCService.class, this, this, ServicePriority.Normal);
     }
