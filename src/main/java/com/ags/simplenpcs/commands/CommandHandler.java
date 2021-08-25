@@ -34,7 +34,11 @@ public class CommandHandler implements CommandExecutor {
             sender.sendMessage(
                     "SimpleNPCS Help:",
                     "/snpc help",
-                    "/snpc create <playerSkinName> <NPCname>"
+                    "/snpc create <playerSkinName> <NPCname>",
+                    "/snpc delete",
+                    "/snpc setskin <playerSkinName>",
+                    "/snpc tphere",
+                    "/snpc info"
             );
         }
 
