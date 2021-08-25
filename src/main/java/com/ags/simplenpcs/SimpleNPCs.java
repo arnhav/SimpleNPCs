@@ -4,7 +4,10 @@ import com.ags.simplenpcs.api.SimpleNPCService;
 import com.ags.simplenpcs.commands.CommandHandler;
 import com.ags.simplenpcs.data.FileManager;
 import com.ags.simplenpcs.listeners.NPCListener;
+import com.github.juliarn.npc.NPC;
+import com.github.juliarn.npc.profile.Profile;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -37,7 +40,22 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
     }
 
     @Override
-    public void createNPC(Location l) {
+    public void createNPC(Profile p, Location l) {
+
+    }
+
+    @Override
+    public void deleteNPC(NPC n) {
+
+    }
+
+    @Override
+    public void hideNPCFromPlayer(NPC n, Player p) {
+
+    }
+
+    @Override
+    public void showNPCToPlayer(NPC n, Player p) {
 
     }
 }
