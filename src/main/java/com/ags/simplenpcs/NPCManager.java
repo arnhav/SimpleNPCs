@@ -3,7 +3,6 @@ package com.ags.simplenpcs;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.NPCPool;
 import com.github.juliarn.npc.profile.Profile;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
