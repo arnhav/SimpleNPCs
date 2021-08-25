@@ -1,6 +1,10 @@
-name: SimpleNPCS
+name: SimpleNPCs
 version: ${project.version}
 main: com.ags.simplenpcs.SimpleNPCs
 api-version: 1.17
 depend: [ ProtocolLib ]
 authors: [ Tyrriel ]
+commands:
+  snpc:
+    usage: /<command>
+    description: SimpleNPC command

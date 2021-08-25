@@ -1,6 +1,5 @@
 package com.ags.simplenpcs.commands;
 
-
 import com.ags.simplenpcs.NPCManager;
 import com.github.juliarn.npc.profile.Profile;
 import org.bukkit.Bukkit;
@@ -25,6 +24,7 @@ public class CommandHandler implements CommandExecutor {
 
         if (args.length == 0) {
             Bukkit.dispatchCommand(sender, "snpc help");
+            return true;
         }
 
         if (args[0].equalsIgnoreCase("help")){
@@ -38,7 +38,7 @@ public class CommandHandler implements CommandExecutor {
         if (args[0].equalsIgnoreCase("create")){
             if (args.length != 3) return false;
             Profile profile = npcManager.createProfile(args[1], args[2]);
-            npcManager.addNPC(((Player) sender).getLocation(),profile);
+            npcManager.addNPC(((Player) sender).getLocation(), profile);
         }
 
         return true;

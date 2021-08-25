@@ -23,6 +23,7 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        npcManager.removeNPCs();
     }
 
     public static SimpleNPCs instance(){
