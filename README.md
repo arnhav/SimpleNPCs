@@ -1,5 +1,5 @@
 # SimpleNPCs
-Citizens but not laggy
+A lightweight alternative to Citizens
 
 ## Maven
 ```
