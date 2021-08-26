@@ -97,13 +97,21 @@ public class FileManager {
             if (world == null) continue;
             Location location = new Location(world, x, y, z, yaw, pitch);
 
-            NPCManager.spawnNPC(location, profile, snpc);
+            NPC npc = NPCManager.spawnNPC(location, profile, snpc);
+
+            boolean look = cs.getBoolean(p+".look");
+            boolean imitate = cs.getBoolean(p+".imitate");
+
+            npc.setLookAtPlayer(look);
+            npc.setImitatePlayer(imitate);
         }
     }
 
     public static void saveNPC(NPC npc, SNPC snpc){
         FileConfiguration fc = YamlConfiguration.loadConfiguration(npcFile);
         fc.set("npc."+snpc.getId()+".name", npc.getProfile().getName());
+        fc.set("npc."+snpc.getId()+".look", npc.isLookAtPlayer());
+        fc.set("npc."+snpc.getId()+".imitate", npc.isImitatePlayer());
         for (Profile.Property p : npc.getProfile().getProperties()){
             fc.set("npc."+snpc.getId()+".properties."+p.getName()+".value", p.getValue());
             fc.set("npc."+snpc.getId()+".properties."+p.getName()+".signature", p.getSignature());

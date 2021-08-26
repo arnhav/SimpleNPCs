@@ -40,6 +40,8 @@ public class CommandHandler implements CommandExecutor {
                     "/snpc delete",
                     "/snpc setskin <playerSkinName>",
                     "/snpc tphere",
+                    "/snpc look",
+                    "/snpc imitate",
                     "/snpc info"
             );
         }
@@ -80,6 +82,26 @@ public class CommandHandler implements CommandExecutor {
             NPC npc = NPCManager.spawnNPC(((Player) sender).getLocation(), selected.getProfile(), snpc);
             npcManager.removeNPC(selected);
             FileManager.saveNPC(npc, snpc);
+        }
+
+        if (args[0].equalsIgnoreCase("look")){
+            if (args.length != 1) return false;
+            NPC selected = NPCManager.selectedNPC.get(sender);
+            if (selected == null) return false;
+            SNPC snpc = NPCManager.npcs.get(selected);
+            if (snpc == null) return false;
+            selected.setLookAtPlayer(!selected.isLookAtPlayer());
+            FileManager.saveNPC(selected, snpc);
+        }
+
+        if (args[0].equalsIgnoreCase("imitate")){
+            if (args.length != 1) return false;
+            NPC selected = NPCManager.selectedNPC.get(sender);
+            if (selected == null) return false;
+            SNPC snpc = NPCManager.npcs.get(selected);
+            if (snpc == null) return false;
+            selected.setImitatePlayer(!selected.isImitatePlayer());
+            FileManager.saveNPC(selected, snpc);
         }
 
         if (args[0].equalsIgnoreCase("info")){

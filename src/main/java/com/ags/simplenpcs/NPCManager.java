@@ -35,7 +35,7 @@ public class NPCManager {
             .profile(profile)
             .location(location)
             .imitatePlayer(false)
-            .lookAtPlayer(true)
+            .lookAtPlayer(false)
             .build(npcPool);
         npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true).send();
         SNPC snpc = new SNPC(npcs.size());
@@ -48,7 +48,7 @@ public class NPCManager {
                 .profile(profile)
                 .location(location)
                 .imitatePlayer(false)
-                .lookAtPlayer(true)
+                .lookAtPlayer(false)
                 .build(npcPool);
         npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true).send();
         SNPC snpc = new SNPC(npcs.size());
@@ -61,7 +61,7 @@ public class NPCManager {
                 .profile(profile)
                 .location(location)
                 .imitatePlayer(false)
-                .lookAtPlayer(true)
+                .lookAtPlayer(false)
                 .build(npcPool);
         npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true).send();
         npcs.put(npc, snpc);
