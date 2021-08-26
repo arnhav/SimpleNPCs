@@ -65,15 +65,16 @@ public class NPCManager {
         return npc;
     }
 
-    public void removeNPC(NPC npc){
+    public void removeNPC(NPC npc, boolean full){
         SNPC snpc = npcs.get(npc);
         npcPool.removeNPC(npc.getEntityId());
+        if (!full) return;
         FileManager.removeNPC(snpc);
         npcs.remove(npc);
     }
 
     public void removeNPCs(){
-        npcPool.getNPCs().forEach(this::removeNPC);
+        npcPool.getNPCs().forEach(npc -> removeNPC(npc, false));
     }
 
     public void hideNPCForPlayer(NPC npc, Player player){

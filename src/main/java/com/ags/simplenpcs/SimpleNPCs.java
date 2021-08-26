@@ -32,7 +32,6 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        npcManager.removeNPCs();
     }
 
     public static SimpleNPCs instance(){
@@ -46,7 +45,7 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
 
     @Override
     public void deleteNPC(NPC n) {
-        npcManager.removeNPC(n);
+        npcManager.removeNPC(n, true);
     }
 
     @Override

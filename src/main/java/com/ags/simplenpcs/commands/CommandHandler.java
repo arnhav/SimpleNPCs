@@ -58,7 +58,7 @@ public class CommandHandler implements CommandExecutor {
             if (args.length != 1) return false;
             NPC selected = NPCManager.selectedNPC.get(sender);
             if (selected == null) return false;
-            npcManager.removeNPC(selected);
+            npcManager.removeNPC(selected, true);
             sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+selected.getEntityId()+" deleted."));
         }
 
@@ -73,7 +73,7 @@ public class CommandHandler implements CommandExecutor {
             NPC npc = NPCManager.spawnNPC(selected.getLocation(), profile, snpc);
             npc.setLookAtPlayer(selected.isLookAtPlayer());
             npc.setImitatePlayer(selected.isImitatePlayer());
-            npcManager.removeNPC(selected);
+            npcManager.removeNPC(selected, false);
             FileManager.saveNPC(npc, snpc);
             NPCManager.selectedNPC.put((Player) sender, npc);
             sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+npc.getEntityId()+" skin changed."));
@@ -88,7 +88,7 @@ public class CommandHandler implements CommandExecutor {
             NPC npc = NPCManager.spawnNPC(((Player) sender).getLocation(), selected.getProfile(), snpc);
             npc.setLookAtPlayer(selected.isLookAtPlayer());
             npc.setImitatePlayer(selected.isImitatePlayer());
-            npcManager.removeNPC(selected);
+            npcManager.removeNPC(selected, false);
             FileManager.saveNPC(npc, snpc);
             NPCManager.selectedNPC.put((Player) sender, npc);
             sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+npc.getEntityId()+" changed location."));
@@ -131,6 +131,10 @@ public class CommandHandler implements CommandExecutor {
                 sender.sendMessage(Component.text(ChatColor.DARK_AQUA+" Value: "+pr.getValue()));
                 sender.sendMessage(Component.text(ChatColor.DARK_AQUA+" Signature: "+pr.getSignature()));
             }
+        }
+
+        if (args[0].equalsIgnoreCase("rmall")){
+            npcManager.removeNPCs();
         }
 
         if (args[0].equalsIgnoreCase("migrateCitizens")){
