@@ -6,6 +6,8 @@ import com.ags.simplenpcs.api.NPCRightClickEvent;
 import com.ags.simplenpcs.objects.SNPC;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.event.PlayerNPCInteractEvent;
+import com.github.juliarn.npc.event.PlayerNPCShowEvent;
+import com.github.juliarn.npc.modifier.MetadataModifier;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -48,6 +50,12 @@ public class NPCListener implements Listener {
             NPCManager.selectedNPC.put(player, npc);
             player.sendMessage(Component.text(ChatColor.YELLOW+"You have selected NPC: "+snpc.getId()));
         }
+    }
+
+    @EventHandler
+    public void onNPCShow(PlayerNPCShowEvent event){
+        NPC npc = event.getNPC();
+        event.send(npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true));
     }
 
 }
