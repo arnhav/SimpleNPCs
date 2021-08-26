@@ -1,6 +1,8 @@
 package com.ags.simplenpcs.commands;
 
 import com.ags.simplenpcs.NPCManager;
+import com.ags.simplenpcs.data.FileManager;
+import com.ags.simplenpcs.objects.SNPC;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.profile.Profile;
 import net.kyori.adventure.text.Component;
@@ -61,12 +63,11 @@ public class CommandHandler implements CommandExecutor {
             if (args.length != 2) return false;
             NPC selected = NPCManager.selectedNPC.get(sender);
             if (selected == null) return false;
-            // TODO: Fill this out, for now it is to debug profile properties
-            Profile profile = selected.getProfile();
+            Profile current = selected.getProfile();
+            Profile profile = npcManager.createProfile(args[1], current.getName());
             for (Profile.Property pr : profile.getProperties()){
-                System.out.println("Name: "+pr.getName());
-                System.out.println("Value: "+pr.getValue());
-                System.out.println("Signature: "+pr.getSignature());
+                Profile.Property property = new Profile.Property(pr.getName(), pr.getValue(), pr.getSignature());
+                current.setProperty(property);
             }
         }
 
@@ -74,15 +75,22 @@ public class CommandHandler implements CommandExecutor {
             if (args.length != 1) return false;
             NPC selected = NPCManager.selectedNPC.get(sender);
             if (selected == null) return false;
-            // TODO: Figure out if it is possible to move NPC here
+            SNPC snpc = NPCManager.npcs.get(selected);
+            if (snpc == null) return false;
+            NPC npc = NPCManager.spawnNPC(((Player) sender).getLocation(), selected.getProfile(), snpc);
+            npcManager.removeNPC(selected);
+            FileManager.saveNPC(npc, snpc);
         }
 
         if (args[0].equalsIgnoreCase("info")){
             if (args.length != 1) return false;
             NPC selected = NPCManager.selectedNPC.get(sender);
             if (selected == null) return false;
+            SNPC snpc = NPCManager.npcs.get(selected);
+            if (snpc == null) return false;
             sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"--NPC Info--"));
-            sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"ID: "+selected.getEntityId()));
+            sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"Internal ID: "+selected.getEntityId()));
+            sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"ID: "+snpc.getId()));
         }
 
         return true;

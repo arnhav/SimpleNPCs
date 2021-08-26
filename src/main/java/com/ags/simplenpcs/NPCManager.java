@@ -21,7 +21,7 @@ public class NPCManager {
 
     private final Random random;
 
-    private static HashMap<NPC, SNPC> npcs = new HashMap<>();
+    public static HashMap<NPC, SNPC> npcs = new HashMap<>();
     public static WeakHashMap<Player, NPC> selectedNPC = new WeakHashMap<>();
 
     public NPCManager(JavaPlugin plugin) {
@@ -47,7 +47,7 @@ public class NPCManager {
         FileManager.saveNPC(npc, snpc);
     }
 
-    public static void spawnNPC(Location location, Profile profile, SNPC snpc){
+    public static NPC spawnNPC(Location location, Profile profile, SNPC snpc){
         NPC npc= NPC.builder()
                 .profile(profile)
                 .location(location)
@@ -56,12 +56,14 @@ public class NPCManager {
                 .build(npcPool);
         npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true).send();
         npcs.put(npc, snpc);
+        return npc;
     }
 
     public void removeNPC(NPC npc){
         SNPC snpc = npcs.get(npc);
         npcPool.removeNPC(npc.getEntityId());
         FileManager.removeNPC(snpc);
+        npcs.remove(npc);
     }
 
     public void removeNPCs(){
