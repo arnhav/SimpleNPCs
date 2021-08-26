@@ -35,15 +35,13 @@ public class NPCListener implements Listener {
             if (nrce.isCancelled()) return;
             Bukkit.getPluginManager().callEvent(nrce);
 
-            EquipmentSlot es = EquipmentSlot.valueOf(hand.toString());
+            EquipmentSlot es = EquipmentSlot.valueOf(hand==PlayerNPCInteractEvent.Hand.MAIN_HAND?"HAND":hand.toString());
             EntityEquipment ee = player.getEquipment();
             if (ee == null) return;
             if (ee.getItem(es).getType() != Material.STICK) return;
             NPCManager.selectedNPC.put(player, npc);
             player.sendMessage(Component.text(ChatColor.YELLOW+"You have selected NPC: "+npc.getEntityId()));
         }
-
-        npc.rotation().queueLookAt(player.getEyeLocation()).send(player);
     }
 
 }

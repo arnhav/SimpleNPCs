@@ -64,7 +64,9 @@ public class CommandHandler implements CommandExecutor {
             // TODO: Fill this out, for now it is to debug profile properties
             Profile profile = selected.getProfile();
             for (Profile.Property pr : profile.getProperties()){
-                System.out.println(pr.toString());
+                System.out.println("Name: "+pr.getName());
+                System.out.println("Value: "+pr.getValue());
+                System.out.println("Signature: "+pr.getSignature());
             }
         }
 
