@@ -1,6 +1,7 @@
 package com.ags.simplenpcs;
 
 import com.ags.simplenpcs.data.FileManager;
+import com.ags.simplenpcs.objects.SNPC;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.NPCPool;
 import com.github.juliarn.npc.modifier.MetadataModifier;
@@ -9,16 +10,18 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
 import java.util.WeakHashMap;
 
 public class NPCManager {
 
-    private final NPCPool npcPool;
+    private static NPCPool npcPool;
 
     private final Random random;
 
+    private static HashMap<NPC, SNPC> npcs = new HashMap<>();
     public static WeakHashMap<Player, NPC> selectedNPC = new WeakHashMap<>();
 
     public NPCManager(JavaPlugin plugin) {
@@ -37,14 +40,28 @@ public class NPCManager {
             .location(location)
             .imitatePlayer(false)
             .lookAtPlayer(true)
-            .build(this.npcPool);
+            .build(npcPool);
         npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true).send();
+        SNPC snpc = new SNPC(npcs.size());
+        npcs.put(npc, snpc);
+        FileManager.saveNPC(npc, snpc);
+    }
 
-        FileManager.saveNPC(npc);
+    public static void spawnNPC(Location location, Profile profile, SNPC snpc){
+        NPC npc= NPC.builder()
+                .profile(profile)
+                .location(location)
+                .imitatePlayer(false)
+                .lookAtPlayer(true)
+                .build(npcPool);
+        npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true).send();
+        npcs.put(npc, snpc);
     }
 
     public void removeNPC(NPC npc){
+        SNPC snpc = npcs.get(npc);
         npcPool.removeNPC(npc.getEntityId());
+        FileManager.removeNPC(snpc);
     }
 
     public void removeNPCs(){
@@ -67,9 +84,11 @@ public class NPCManager {
         return profile;
     }
 
-    public Profile createProfile(String playerName){
+    public static Profile createProfile(String playerName){
+        Random random = new Random();
         Profile profile = new Profile(playerName);
         profile.complete();
+        profile.setUniqueId(new UUID(random.nextLong(), 0));
         return profile;
     }
 }
