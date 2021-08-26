@@ -1,6 +1,7 @@
 package com.ags.simplenpcs.data;
 
 import com.ags.simplenpcs.NPCManager;
+import com.ags.simplenpcs.SimpleNPCs;
 import com.ags.simplenpcs.objects.SNPC;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.profile.Profile;
@@ -44,9 +45,6 @@ public class FileManager {
 
     private void createNPCsFile(){
         try {
-            if (!plugin.getDataFolder().exists()) {
-                plugin.getDataFolder().mkdirs();
-            }
             npcFile = new File(plugin.getDataFolder(), "npcs.yml");
             FileConfiguration fc = YamlConfiguration.loadConfiguration(npcFile);
             if (!npcFile.exists()) {
@@ -104,6 +102,47 @@ public class FileManager {
 
             npc.setLookAtPlayer(look);
             npc.setImitatePlayer(imitate);
+        }
+    }
+
+    public static void loadCitizensFile(){
+        File file = new File(SimpleNPCs.instance().getDataFolder(), "saves.yml");
+        if (!file.exists()) return;
+        FileConfiguration fc = YamlConfiguration.loadConfiguration(file);
+        ConfigurationSection cs = fc.getConfigurationSection("npc");
+        if (cs == null) return;
+        for (String p : cs.getKeys(false)){
+            int id = Integer.parseInt(p);
+            SNPC snpc = new SNPC(id);
+
+            String name = cs.getString(p+".name");
+
+            double x = cs.getDouble(p+".traits.location.x");
+            double y = cs.getDouble(p+".traits.location.y");
+            double z = cs.getDouble(p+".traits.location.z");
+            float yaw = (float) cs.getDouble(p+".traits.location.yaw");
+            float pitch = (float) cs.getDouble(p+".traits.location.pitch");
+            String worldName = cs.getString(p+".traits.location.world");
+            if (worldName == null) continue;
+            World world = Bukkit.getWorld(worldName);
+            if (world == null) continue;
+            Location location = new Location(world, x, y, z, yaw, pitch);
+
+            boolean look = cs.getBoolean(p+".traits.lookclose.enabled");
+
+            String value = cs.getString(p+".traits.skintrait.textureRaw");
+            String signature = cs.getString(p+".traits.skintrait.signature");
+
+            if (value == null || signature == null) continue;
+
+            Profile profile = NPCManager.createProfile(name);
+            Profile.Property property = new Profile.Property("textures", value, signature);
+            profile.setProperty(property);
+
+            NPC npc = NPCManager.spawnNPC(location, profile, snpc);
+            npc.setLookAtPlayer(look);
+
+            saveNPC(npc, snpc);
         }
     }
 

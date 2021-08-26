@@ -115,6 +115,10 @@ public class CommandHandler implements CommandExecutor {
             sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"ID: "+snpc.getId()));
         }
 
+        if (args[0].equalsIgnoreCase("migrateCitizens")){
+            FileManager.loadCitizensFile();
+        }
+
         return true;
     }
 }
