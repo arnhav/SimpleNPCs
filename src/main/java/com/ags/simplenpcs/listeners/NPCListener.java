@@ -3,6 +3,7 @@ package com.ags.simplenpcs.listeners;
 import com.ags.simplenpcs.NPCManager;
 import com.ags.simplenpcs.api.NPCLeftClickEvent;
 import com.ags.simplenpcs.api.NPCRightClickEvent;
+import com.ags.simplenpcs.objects.SNPC;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.event.PlayerNPCInteractEvent;
 import net.kyori.adventure.text.Component;
@@ -21,8 +22,11 @@ public class NPCListener implements Listener {
     public void onNPCInteract(PlayerNPCInteractEvent event){
         Player player = event.getPlayer();
         NPC npc = event.getNPC();
+        SNPC snpc = NPCManager.npcs.get(npc);
         PlayerNPCInteractEvent.EntityUseAction action = event.getUseAction();
         PlayerNPCInteractEvent.Hand hand = event.getHand();
+
+        if (snpc == null) return;
 
         if (action == PlayerNPCInteractEvent.EntityUseAction.ATTACK){
             NPCLeftClickEvent nlce = new NPCLeftClickEvent(player,npc);
@@ -39,8 +43,10 @@ public class NPCListener implements Listener {
             EntityEquipment ee = player.getEquipment();
             if (ee == null) return;
             if (ee.getItem(es).getType() != Material.STICK) return;
+            NPC selected = NPCManager.selectedNPC.get(player);
+            if (selected != null && selected.getEntityId()==npc.getEntityId()) return;
             NPCManager.selectedNPC.put(player, npc);
-            player.sendMessage(Component.text(ChatColor.YELLOW+"You have selected NPC: "+npc.getEntityId()));
+            player.sendMessage(Component.text(ChatColor.YELLOW+"You have selected NPC: "+snpc.getId()));
         }
     }
 
