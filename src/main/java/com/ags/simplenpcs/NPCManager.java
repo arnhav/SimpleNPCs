@@ -19,8 +19,6 @@ public class NPCManager {
 
     private static NPCPool npcPool;
 
-    private final Random random;
-
     public static HashMap<NPC, SNPC> npcs = new HashMap<>();
     public static WeakHashMap<Player, NPC> selectedNPC = new WeakHashMap<>();
 
@@ -30,8 +28,6 @@ public class NPCManager {
                 .actionDistance(30)
                 .tabListRemoveTicks(20)
                 .build();
-
-        this.random = new Random();
     }
 
     public void addNPC(Location location, Profile profile){
@@ -79,10 +75,11 @@ public class NPCManager {
     }
 
     public Profile createProfile(String playerName, String customName){
+        Random random = new Random();
         Profile profile = new Profile(playerName);
         profile.complete();
         profile.setName(customName);
-        profile.setUniqueId(new UUID(this.random.nextLong(), 0));
+        profile.setUniqueId(new UUID(random.nextLong(), 0));
         return profile;
     }
 
