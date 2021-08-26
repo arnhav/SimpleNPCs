@@ -1,6 +1,7 @@
 package com.ags.simplenpcs.commands;
 
 import com.ags.simplenpcs.NPCManager;
+import com.ags.simplenpcs.SimpleNPCs;
 import com.ags.simplenpcs.data.FileManager;
 import com.ags.simplenpcs.objects.SNPC;
 import com.github.juliarn.npc.NPC;
@@ -65,12 +66,17 @@ public class CommandHandler implements CommandExecutor {
             if (args.length != 2) return false;
             NPC selected = NPCManager.selectedNPC.get(sender);
             if (selected == null) return false;
+            SNPC snpc = NPCManager.npcs.get(selected);
+            if (snpc == null) return false;
             Profile current = selected.getProfile();
             Profile profile = npcManager.createProfile(args[1], current.getName());
-            for (Profile.Property pr : profile.getProperties()){
-                Profile.Property property = new Profile.Property(pr.getName(), pr.getValue(), pr.getSignature());
-                current.setProperty(property);
-            }
+            NPC npc = NPCManager.spawnNPC(selected.getLocation(), profile, snpc);
+            npc.setLookAtPlayer(selected.isLookAtPlayer());
+            npc.setImitatePlayer(selected.isImitatePlayer());
+            npcManager.removeNPC(selected);
+            FileManager.saveNPC(npc, snpc);
+            NPCManager.selectedNPC.put((Player) sender, npc);
+            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+npc.getEntityId()+" skin changed."));
         }
 
         if (args[0].equalsIgnoreCase("tphere")){
@@ -80,8 +86,12 @@ public class CommandHandler implements CommandExecutor {
             SNPC snpc = NPCManager.npcs.get(selected);
             if (snpc == null) return false;
             NPC npc = NPCManager.spawnNPC(((Player) sender).getLocation(), selected.getProfile(), snpc);
+            npc.setLookAtPlayer(selected.isLookAtPlayer());
+            npc.setImitatePlayer(selected.isImitatePlayer());
             npcManager.removeNPC(selected);
             FileManager.saveNPC(npc, snpc);
+            NPCManager.selectedNPC.put((Player) sender, npc);
+            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+npc.getEntityId()+" changed location."));
         }
 
         if (args[0].equalsIgnoreCase("look")){
@@ -92,6 +102,7 @@ public class CommandHandler implements CommandExecutor {
             if (snpc == null) return false;
             selected.setLookAtPlayer(!selected.isLookAtPlayer());
             FileManager.saveNPC(selected, snpc);
+            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+selected.getEntityId()+" toggled look."));
         }
 
         if (args[0].equalsIgnoreCase("imitate")){
@@ -102,6 +113,7 @@ public class CommandHandler implements CommandExecutor {
             if (snpc == null) return false;
             selected.setImitatePlayer(!selected.isImitatePlayer());
             FileManager.saveNPC(selected, snpc);
+            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+selected.getEntityId()+" toggled imitate."));
         }
 
         if (args[0].equalsIgnoreCase("info")){
@@ -113,10 +125,16 @@ public class CommandHandler implements CommandExecutor {
             sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"--NPC Info--"));
             sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"Internal ID: "+selected.getEntityId()));
             sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"ID: "+snpc.getId()));
+            sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"Properties:"));
+            for (Profile.Property pr : selected.getProfile().getProperties()){
+                sender.sendMessage(Component.text(ChatColor.DARK_AQUA+" Name: "+pr.getName()));
+                sender.sendMessage(Component.text(ChatColor.DARK_AQUA+" Value: "+pr.getValue()));
+                sender.sendMessage(Component.text(ChatColor.DARK_AQUA+" Signature: "+pr.getSignature()));
+            }
         }
 
         if (args[0].equalsIgnoreCase("migrateCitizens")){
-            FileManager.loadCitizensFile();
+            Bukkit.getScheduler().runTaskAsynchronously(SimpleNPCs.instance(), FileManager::loadCitizensFile);
         }
 
         return true;

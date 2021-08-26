@@ -10,10 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
-import java.util.Random;
-import java.util.UUID;
-import java.util.WeakHashMap;
+import java.util.*;
 
 public class NPCManager {
 
@@ -96,10 +93,10 @@ public class NPCManager {
         return profile;
     }
 
-    public static Profile createProfile(String playerName){
+    public static Profile createProfile(String playerName, List<Profile.Property> list){
         Random random = new Random();
-        Profile profile = new Profile(playerName);
-        profile.complete();
+        Profile profile = new Profile(playerName, list);
+        profile.complete(false);
         profile.setUniqueId(new UUID(random.nextLong(), 0));
         return profile;
     }

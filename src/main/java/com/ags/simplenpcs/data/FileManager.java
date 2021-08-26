@@ -14,6 +14,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class FileManager {
 
@@ -54,7 +58,7 @@ public class FileManager {
             } else {
                 plugin.getLogger().info("npcs.yml found, loading!");
             }
-            loadNPCs(npcFile);
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, ()-> loadNPCs(npcFile));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,18 +75,18 @@ public class FileManager {
 
             String name = cs.getString(p+".name");
 
-            Profile profile = NPCManager.createProfile("Notch");
-            profile.setName(name);
-
             ConfigurationSection pcs = cs.getConfigurationSection(p+".properties");
             if (pcs == null) continue;
+            List<Profile.Property> properties = new ArrayList<>();
             for (String ps : pcs.getKeys(false)){
                 String value = pcs.getString(ps+".value");
                 String signature = pcs.getString(ps+".signature");
                 if (value == null || signature == null) continue;
                 Profile.Property property = new Profile.Property(ps, value, signature);
-                profile.setProperty(property);
+                properties.add(property);
             }
+
+            Profile profile = NPCManager.createProfile(name==null?"NPC":name, properties);
 
             double x = cs.getDouble(p+".loc.x");
             double y = cs.getDouble(p+".loc.y");
@@ -135,9 +139,8 @@ public class FileManager {
 
             if (value == null || signature == null) continue;
 
-            Profile profile = NPCManager.createProfile(name);
             Profile.Property property = new Profile.Property("textures", value, signature);
-            profile.setProperty(property);
+            Profile profile = NPCManager.createProfile(name==null?"NPC":name, Collections.singletonList(property));
 
             NPC npc = NPCManager.spawnNPC(location, profile, snpc);
             npc.setLookAtPlayer(look);
