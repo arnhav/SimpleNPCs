@@ -1,6 +1,8 @@
 # SimpleNPCs
 A lightweight alternative to Citizens
 
+[![](https://jitpack.io/v/arnhav11/SimpleNPCs.svg)](https://jitpack.io/#arnhav11/SimpleNPCs)
+
 ## Maven
 ```
 <repository>
@@ -14,4 +16,3 @@ A lightweight alternative to Citizens
     <version>main-SNAPSHOT</version>
 </dependency>
 ```
-[![](https://jitpack.io/v/arnhav11/SimpleNPCs.svg)](https://jitpack.io/#arnhav11/SimpleNPCs)
