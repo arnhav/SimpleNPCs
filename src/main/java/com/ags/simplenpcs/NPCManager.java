@@ -43,6 +43,19 @@ public class NPCManager {
         FileManager.saveNPC(npc, snpc);
     }
 
+    public static NPC spawnNPC(Location location, Profile profile){
+        NPC npc= NPC.builder()
+                .profile(profile)
+                .location(location)
+                .imitatePlayer(false)
+                .lookAtPlayer(true)
+                .build(npcPool);
+        npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true).send();
+        SNPC snpc = new SNPC(npcs.size());
+        npcs.put(npc, snpc);
+        return npc;
+    }
+
     public static NPC spawnNPC(Location location, Profile profile, SNPC snpc){
         NPC npc= NPC.builder()
                 .profile(profile)
