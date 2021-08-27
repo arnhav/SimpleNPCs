@@ -21,9 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class FileManager {
+public record FileManager(JavaPlugin plugin) {
 
-    private JavaPlugin plugin;
     private static File npcFile;
 
     public static int lastNPCID = -1;
@@ -52,18 +51,18 @@ public class FileManager {
         }
     }
 
-    private void loadConfigFile(){
+    private void loadConfigFile() {
         FileConfiguration fc = plugin.getConfig();
         lastNPCID = fc.getInt("lastNPCID");
     }
 
-    public void updateLastNPCID(){
+    public void updateLastNPCID() {
         FileConfiguration fc = plugin.getConfig();
         fc.set("lastNPCID", lastNPCID);
         plugin.saveConfig();
     }
 
-    private void createNPCsFile(){
+    private void createNPCsFile() {
         try {
             npcFile = new File(plugin.getDataFolder(), "npcs.yml");
             FileConfiguration fc = YamlConfiguration.loadConfiguration(npcFile);
@@ -74,41 +73,41 @@ public class FileManager {
             } else {
                 plugin.getLogger().info("npcs.yml found, loading!");
             }
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, ()-> loadNPCs(npcFile));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> loadNPCs(npcFile));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void loadNPCs(File file){
+    private void loadNPCs(File file) {
         FileConfiguration fc = YamlConfiguration.loadConfiguration(file);
 
         ConfigurationSection cs = fc.getConfigurationSection("npc");
         if (cs == null) return;
-        for (String p : cs.getKeys(false)){
+        for (String p : cs.getKeys(false)) {
             int id = Integer.parseInt(p);
             SNPC snpc = new SNPC();
 
-            String name = cs.getString(p+".name");
-            boolean look = cs.getBoolean(p+".look");
-            boolean imitate = cs.getBoolean(p+".imitate");
+            String name = cs.getString(p + ".name");
+            boolean look = cs.getBoolean(p + ".look");
+            boolean imitate = cs.getBoolean(p + ".imitate");
 
-            ConfigurationSection tcs = cs.getConfigurationSection(p+".properties");
+            ConfigurationSection tcs = cs.getConfigurationSection(p + ".properties");
             if (tcs == null) continue;
             List<Profile.Property> properties = new ArrayList<>();
-            for (String ts : tcs.getKeys(false)){
-                String value = tcs.getString(ts+".value");
-                String signature = tcs.getString(ts+".signature");
+            for (String ts : tcs.getKeys(false)) {
+                String value = tcs.getString(ts + ".value");
+                String signature = tcs.getString(ts + ".signature");
                 if (value == null || signature == null) continue;
                 Profile.Property property = new Profile.Property(ts, value, signature);
                 properties.add(property);
             }
 
-            Profile profile = NPCManager.createProfile(name==null?"NPC":name, properties);
+            Profile profile = NPCManager.createProfile(name == null ? "NPC" : name, properties);
 
-            tcs = cs.getConfigurationSection(p+".equipment");
-            if (tcs != null){
-                for (String ts : tcs.getKeys(false)){
+            tcs = cs.getConfigurationSection(p + ".equipment");
+            if (tcs != null) {
+                for (String ts : tcs.getKeys(false)) {
                     NPCEquipmentSlot nes = NPCEquipmentSlot.valueOf(ts);
                     String ti = tcs.getString(ts);
                     ItemStack is = ItemUtils.stringToItem(ti);
@@ -117,12 +116,12 @@ public class FileManager {
                 }
             }
 
-            double x = cs.getDouble(p+".loc.x");
-            double y = cs.getDouble(p+".loc.y");
-            double z = cs.getDouble(p+".loc.z");
-            float yaw = (float) cs.getDouble(p+".loc.u");
-            float pitch = (float) cs.getDouble(p+".loc.p");
-            String worldName = cs.getString(p+".loc.w");
+            double x = cs.getDouble(p + ".loc.x");
+            double y = cs.getDouble(p + ".loc.y");
+            double z = cs.getDouble(p + ".loc.z");
+            float yaw = (float) cs.getDouble(p + ".loc.u");
+            float pitch = (float) cs.getDouble(p + ".loc.p");
+            String worldName = cs.getString(p + ".loc.w");
             if (worldName == null) continue;
             World world = Bukkit.getWorld(worldName);
             if (world == null) continue;
@@ -133,45 +132,45 @@ public class FileManager {
             npc.setLookAtPlayer(look);
             npc.setImitatePlayer(imitate);
 
-            for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()){
+            for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()) {
                 npc.equipment().queue(nes.getIndex(), snpc.getEquipment().get(nes)).send();
             }
         }
     }
 
-    public static void loadCitizensFile(){
+    public static void loadCitizensFile() {
         File file = new File(SimpleNPCs.instance().getDataFolder(), "saves.yml");
         if (!file.exists()) return;
         FileConfiguration fc = YamlConfiguration.loadConfiguration(file);
         lastNPCID = fc.getInt("last-created-npc-id");
         ConfigurationSection cs = fc.getConfigurationSection("npc");
         if (cs == null) return;
-        for (String p : cs.getKeys(false)){
+        for (String p : cs.getKeys(false)) {
             int id = Integer.parseInt(p);
             SNPC snpc = new SNPC();
 
-            String name = cs.getString(p+".name");
+            String name = cs.getString(p + ".name");
 
-            double x = cs.getDouble(p+".traits.location.x");
-            double y = cs.getDouble(p+".traits.location.y");
-            double z = cs.getDouble(p+".traits.location.z");
-            float yaw = (float) cs.getDouble(p+".traits.location.yaw");
-            float pitch = (float) cs.getDouble(p+".traits.location.pitch");
-            String worldName = cs.getString(p+".traits.location.world");
+            double x = cs.getDouble(p + ".traits.location.x");
+            double y = cs.getDouble(p + ".traits.location.y");
+            double z = cs.getDouble(p + ".traits.location.z");
+            float yaw = (float) cs.getDouble(p + ".traits.location.yaw");
+            float pitch = (float) cs.getDouble(p + ".traits.location.pitch");
+            String worldName = cs.getString(p + ".traits.location.world");
             if (worldName == null) continue;
             World world = Bukkit.getWorld(worldName);
             if (world == null) continue;
             Location location = new Location(world, x, y, z, yaw, pitch);
 
-            boolean look = cs.getBoolean(p+".traits.lookclose.enabled");
+            boolean look = cs.getBoolean(p + ".traits.lookclose.enabled");
 
-            String value = cs.getString(p+".traits.skintrait.textureRaw");
-            String signature = cs.getString(p+".traits.skintrait.signature");
+            String value = cs.getString(p + ".traits.skintrait.textureRaw");
+            String signature = cs.getString(p + ".traits.skintrait.signature");
 
             if (value == null || signature == null) continue;
 
             Profile.Property property = new Profile.Property("textures", value, signature);
-            Profile profile = NPCManager.createProfile(name==null?"NPC":name, Collections.singletonList(property));
+            Profile profile = NPCManager.createProfile(name == null ? "NPC" : name, Collections.singletonList(property));
 
             NPC npc = NPCManager.spawnNPC(location, profile, id, snpc);
             npc.setLookAtPlayer(look);
@@ -180,35 +179,35 @@ public class FileManager {
         }
     }
 
-    public static void saveNPC(int id, NPC npc, SNPC snpc){
+    public static void saveNPC(int id, NPC npc, SNPC snpc) {
         FileConfiguration fc = YamlConfiguration.loadConfiguration(npcFile);
-        fc.set("npc."+id+".name", npc.getProfile().getName());
-        fc.set("npc."+id+".look", npc.isLookAtPlayer());
-        fc.set("npc."+id+".imitate", npc.isImitatePlayer());
-        for (Profile.Property p : npc.getProfile().getProperties()){
-            fc.set("npc."+id+".properties."+p.getName()+".value", p.getValue());
-            fc.set("npc."+id+".properties."+p.getName()+".signature", p.getSignature());
+        fc.set("npc." + id + ".name", npc.getProfile().getName());
+        fc.set("npc." + id + ".look", npc.isLookAtPlayer());
+        fc.set("npc." + id + ".imitate", npc.isImitatePlayer());
+        for (Profile.Property p : npc.getProfile().getProperties()) {
+            fc.set("npc." + id + ".properties." + p.getName() + ".value", p.getValue());
+            fc.set("npc." + id + ".properties." + p.getName() + ".signature", p.getSignature());
         }
-        for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()){
+        for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()) {
             ItemStack is = snpc.getEquipment().get(nes);
-            fc.set("npc."+id+".equipment."+nes.toString(), ItemUtils.itemToString(is));
+            fc.set("npc." + id + ".equipment." + nes.toString(), ItemUtils.itemToString(is));
         }
-        fc.set("npc."+id+".loc.x", npc.getLocation().getX());
-        fc.set("npc."+id+".loc.y", npc.getLocation().getY());
-        fc.set("npc."+id+".loc.z", npc.getLocation().getZ());
-        fc.set("npc."+id+".loc.u", npc.getLocation().getYaw());
-        fc.set("npc."+id+".loc.p", npc.getLocation().getPitch());
-        fc.set("npc."+id+".loc.w", npc.getLocation().getWorld().getName());
+        fc.set("npc." + id + ".loc.x", npc.getLocation().getX());
+        fc.set("npc." + id + ".loc.y", npc.getLocation().getY());
+        fc.set("npc." + id + ".loc.z", npc.getLocation().getZ());
+        fc.set("npc." + id + ".loc.u", npc.getLocation().getYaw());
+        fc.set("npc." + id + ".loc.p", npc.getLocation().getPitch());
+        fc.set("npc." + id + ".loc.w", npc.getLocation().getWorld().getName());
         saveFile(fc, npcFile);
     }
 
-    public static void removeNPC(int id){
+    public static void removeNPC(int id) {
         FileConfiguration fc = YamlConfiguration.loadConfiguration(npcFile);
-        fc.set("npc."+id, null);
+        fc.set("npc." + id, null);
         saveFile(fc, npcFile);
     }
 
-    private static void saveFile(FileConfiguration fc, File file){
+    private static void saveFile(FileConfiguration fc, File file) {
         try {
             fc.save(file);
         } catch (Exception e) {

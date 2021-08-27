@@ -4,6 +4,7 @@ import com.ags.simplenpcs.api.SimpleNPCService;
 import com.ags.simplenpcs.commands.CommandHandler;
 import com.ags.simplenpcs.data.FileManager;
 import com.ags.simplenpcs.listeners.NPCListener;
+import com.ags.simplenpcs.objects.SNPC;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.profile.Profile;
 import org.bukkit.Location;
@@ -46,8 +47,18 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
     }
 
     @Override
-    public void createNPC(Profile p, Location l) {
-        NPCManager.spawnNPC(l, p);
+    public int getID(NPC npc) {
+        return NPCManager.npcs.get(npc);
+    }
+
+    @Override
+    public SNPC getSNPC(int id) {
+        return NPCManager.snpcs.get(id);
+    }
+
+    @Override
+    public NPC createNPC(Profile p, Location l) {
+        return NPCManager.spawnNPC(l, p);
     }
 
     @Override

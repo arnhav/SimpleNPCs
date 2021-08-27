@@ -37,10 +37,13 @@ public class NPCManager {
             .lookAtPlayer(false)
             .build(npcPool);
         SNPC snpc = new SNPC();
-        npcs.put(npc, FileManager.lastNPCID++);
-        FileManager.saveNPC(FileManager.lastNPCID++, npc, snpc);
+        int id = FileManager.lastNPCID++;
+        npcs.put(npc, id);
+        snpcs.put(id, snpc);
+        FileManager.saveNPC(id, npc, snpc);
     }
 
+    // Used by the API
     public static NPC spawnNPC(Location location, Profile profile){
         NPC npc= NPC.builder()
                 .profile(profile)
@@ -49,10 +52,14 @@ public class NPCManager {
                 .lookAtPlayer(false)
                 .build(npcPool);
         SNPC snpc = new SNPC();
-        npcs.put(npc, FileManager.lastNPCID++);
+        int id = FileManager.lastNPCID++;
+        npcs.put(npc, id);
+        snpcs.put(id, snpc);
+        FileManager.saveNPC(id, npc, snpc);
         return npc;
     }
 
+    // Used by internal stuff like commands and loading from the file
     public static NPC spawnNPC(Location location, Profile profile, int id, SNPC snpc){
         NPC npc= NPC.builder()
                 .profile(profile)
@@ -71,6 +78,7 @@ public class NPCManager {
         if (!full) return;
         FileManager.removeNPC(id);
         npcs.remove(npc);
+        snpcs.remove(id);
     }
 
     public void removeNPCs(){
