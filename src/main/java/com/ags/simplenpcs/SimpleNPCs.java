@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
 
     private NPCManager npcManager;
+    private FileManager fileManager;
 
     @Override
     public void onEnable() {
@@ -24,7 +25,7 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
 
         getServer().getPluginManager().registerEvents(new NPCListener(), this);
 
-        new FileManager(this);
+        fileManager = new FileManager(this);
 
         getServer().getServicesManager().register(SimpleNPCService.class, this, this, ServicePriority.Normal);
     }
@@ -32,6 +33,7 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        fileManager.updateLastNPCID();
     }
 
     public static SimpleNPCs instance(){

@@ -35,7 +35,7 @@ public class NPCManager {
             .lookAtPlayer(false)
             .build(npcPool);
         npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true).send();
-        SNPC snpc = new SNPC(npcs.size());
+        SNPC snpc = new SNPC(FileManager.lastNPCID++);
         npcs.put(npc, snpc);
         FileManager.saveNPC(npc, snpc);
     }
@@ -48,7 +48,7 @@ public class NPCManager {
                 .lookAtPlayer(false)
                 .build(npcPool);
         npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true).send();
-        SNPC snpc = new SNPC(npcs.size());
+        SNPC snpc = new SNPC(FileManager.lastNPCID++);
         npcs.put(npc, snpc);
         return npc;
     }

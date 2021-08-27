@@ -18,7 +18,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,6 +25,8 @@ public class FileManager {
 
     private JavaPlugin plugin;
     private static File npcFile;
+
+    public static int lastNPCID = -1;
 
     public FileManager(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -45,9 +46,21 @@ public class FileManager {
             } else {
                 plugin.getLogger().info("config.yml found, loading!");
             }
+            loadConfigFile();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadConfigFile(){
+        FileConfiguration fc = plugin.getConfig();
+        lastNPCID = fc.getInt("lastNPCID");
+    }
+
+    public void updateLastNPCID(){
+        FileConfiguration fc = plugin.getConfig();
+        fc.set("lastNPCID", lastNPCID);
+        plugin.saveConfig();
     }
 
     private void createNPCsFile(){
@@ -130,6 +143,7 @@ public class FileManager {
         File file = new File(SimpleNPCs.instance().getDataFolder(), "saves.yml");
         if (!file.exists()) return;
         FileConfiguration fc = YamlConfiguration.loadConfiguration(file);
+        lastNPCID = fc.getInt("last-created-npc-id");
         ConfigurationSection cs = fc.getConfigurationSection("npc");
         if (cs == null) return;
         for (String p : cs.getKeys(false)){
