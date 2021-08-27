@@ -70,24 +70,26 @@ public class CommandHandler implements CommandExecutor {
             if (args.length != 2) return false;
             NPC selected = NPCManager.selectedNPC.get(sender);
             if (selected == null) return false;
-            SNPC snpc = NPCManager.npcs.get(selected);
+            Integer id = NPCManager.npcs.get(selected);
+            SNPC snpc = NPCManager.snpcs.get(id);
             if (snpc == null) return false;
             Profile current = selected.getProfile();
             Profile profile = npcManager.createProfile(args[1], current.getName());
-            NPC npc = NPCManager.spawnNPC(selected.getLocation(), profile, snpc);
+            NPC npc = NPCManager.spawnNPC(selected.getLocation(), profile, id, snpc);
             npc.setLookAtPlayer(selected.isLookAtPlayer());
             npc.setImitatePlayer(selected.isImitatePlayer());
             npcManager.removeNPC(selected, false);
-            FileManager.saveNPC(npc, snpc);
+            FileManager.saveNPC(id, npc, snpc);
             NPCManager.selectedNPC.put((Player) sender, npc);
-            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+snpc.getId()+" skin changed."));
+            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+id+" skin changed."));
         }
 
         if (args[0].equalsIgnoreCase("setequipment")){
             if (args.length != 2) return false;
             NPC selected = NPCManager.selectedNPC.get(sender);
             if (selected == null) return false;
-            SNPC snpc = NPCManager.npcs.get(selected);
+            Integer id = NPCManager.npcs.get(selected);
+            SNPC snpc = NPCManager.snpcs.get(id);
             if (snpc == null) return false;
             try {
                 NPCEquipmentSlot nes = NPCEquipmentSlot.valueOf(args[1]);
@@ -95,55 +97,59 @@ public class CommandHandler implements CommandExecutor {
             } catch (Exception e){
                 return false;
             }
-            FileManager.saveNPC(selected, snpc);
-            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+snpc.getId()+" equipment changed."));
+            FileManager.saveNPC(id, selected, snpc);
+            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+id+" equipment changed."));
         }
 
         if (args[0].equalsIgnoreCase("tphere")){
             if (args.length != 1) return false;
             NPC selected = NPCManager.selectedNPC.get(sender);
             if (selected == null) return false;
-            SNPC snpc = NPCManager.npcs.get(selected);
+            Integer id = NPCManager.npcs.get(selected);
+            SNPC snpc = NPCManager.snpcs.get(id);
             if (snpc == null) return false;
-            NPC npc = NPCManager.spawnNPC(((Player) sender).getLocation(), selected.getProfile(), snpc);
+            NPC npc = NPCManager.spawnNPC(((Player) sender).getLocation(), selected.getProfile(), id, snpc);
             npc.setLookAtPlayer(selected.isLookAtPlayer());
             npc.setImitatePlayer(selected.isImitatePlayer());
             npcManager.removeNPC(selected, false);
-            FileManager.saveNPC(npc, snpc);
+            FileManager.saveNPC(id, npc, snpc);
             NPCManager.selectedNPC.put((Player) sender, npc);
-            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+npc.getEntityId()+" changed location."));
+            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+id+" changed location."));
         }
 
         if (args[0].equalsIgnoreCase("look")){
             if (args.length != 1) return false;
             NPC selected = NPCManager.selectedNPC.get(sender);
             if (selected == null) return false;
-            SNPC snpc = NPCManager.npcs.get(selected);
+            Integer id = NPCManager.npcs.get(selected);
+            SNPC snpc = NPCManager.snpcs.get(id);
             if (snpc == null) return false;
             selected.setLookAtPlayer(!selected.isLookAtPlayer());
-            FileManager.saveNPC(selected, snpc);
-            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+selected.getEntityId()+" toggled look."));
+            FileManager.saveNPC(id, selected, snpc);
+            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+id+" toggled look."));
         }
 
         if (args[0].equalsIgnoreCase("imitate")){
             if (args.length != 1) return false;
             NPC selected = NPCManager.selectedNPC.get(sender);
             if (selected == null) return false;
-            SNPC snpc = NPCManager.npcs.get(selected);
+            Integer id = NPCManager.npcs.get(selected);
+            SNPC snpc = NPCManager.snpcs.get(id);
             if (snpc == null) return false;
             selected.setImitatePlayer(!selected.isImitatePlayer());
-            FileManager.saveNPC(selected, snpc);
-            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+selected.getEntityId()+" toggled imitate."));
+            FileManager.saveNPC(id, selected, snpc);
+            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+id+" toggled imitate."));
         }
 
         if (args[0].equalsIgnoreCase("info")){
             if (args.length != 1) return false;
             NPC selected = NPCManager.selectedNPC.get(sender);
             if (selected == null) return false;
-            SNPC snpc = NPCManager.npcs.get(selected);
+            Integer id = NPCManager.npcs.get(selected);
+            SNPC snpc = NPCManager.snpcs.get(id);
             if (snpc == null) return false;
             sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"--NPC Info--"));
-            sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"ID: "+snpc.getId()));
+            sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"ID: "+id));
             sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"Internal ID: "+selected.getEntityId()));
             if (!(sender.getName().equals("Tyrriel") || sender.getName().equals("arnhav"))) return true;
             sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"Properties:"));

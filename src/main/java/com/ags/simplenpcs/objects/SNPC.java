@@ -6,20 +6,10 @@ import java.util.HashMap;
 
 public class SNPC {
 
-    private int id;
     private HashMap<NPCEquipmentSlot, ItemStack> equipment;
 
-    public SNPC(int id){
-        setId(id);
+    public SNPC(){
         this.equipment = new HashMap<>();
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public void addEquipment(NPCEquipmentSlot slot, ItemStack itemStack){

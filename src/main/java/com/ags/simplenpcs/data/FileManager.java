@@ -87,7 +87,7 @@ public class FileManager {
         if (cs == null) return;
         for (String p : cs.getKeys(false)){
             int id = Integer.parseInt(p);
-            SNPC snpc = new SNPC(id);
+            SNPC snpc = new SNPC();
 
             String name = cs.getString(p+".name");
             boolean look = cs.getBoolean(p+".look");
@@ -128,7 +128,7 @@ public class FileManager {
             if (world == null) continue;
             Location location = new Location(world, x, y, z, yaw, pitch);
 
-            NPC npc = NPCManager.spawnNPC(location, profile, snpc);
+            NPC npc = NPCManager.spawnNPC(location, profile, id, snpc);
 
             npc.setLookAtPlayer(look);
             npc.setImitatePlayer(imitate);
@@ -148,7 +148,7 @@ public class FileManager {
         if (cs == null) return;
         for (String p : cs.getKeys(false)){
             int id = Integer.parseInt(p);
-            SNPC snpc = new SNPC(id);
+            SNPC snpc = new SNPC();
 
             String name = cs.getString(p+".name");
 
@@ -173,38 +173,38 @@ public class FileManager {
             Profile.Property property = new Profile.Property("textures", value, signature);
             Profile profile = NPCManager.createProfile(name==null?"NPC":name, Collections.singletonList(property));
 
-            NPC npc = NPCManager.spawnNPC(location, profile, snpc);
+            NPC npc = NPCManager.spawnNPC(location, profile, id, snpc);
             npc.setLookAtPlayer(look);
 
-            saveNPC(npc, snpc);
+            saveNPC(id, npc, snpc);
         }
     }
 
-    public static void saveNPC(NPC npc, SNPC snpc){
+    public static void saveNPC(int id, NPC npc, SNPC snpc){
         FileConfiguration fc = YamlConfiguration.loadConfiguration(npcFile);
-        fc.set("npc."+snpc.getId()+".name", npc.getProfile().getName());
-        fc.set("npc."+snpc.getId()+".look", npc.isLookAtPlayer());
-        fc.set("npc."+snpc.getId()+".imitate", npc.isImitatePlayer());
+        fc.set("npc."+id+".name", npc.getProfile().getName());
+        fc.set("npc."+id+".look", npc.isLookAtPlayer());
+        fc.set("npc."+id+".imitate", npc.isImitatePlayer());
         for (Profile.Property p : npc.getProfile().getProperties()){
-            fc.set("npc."+snpc.getId()+".properties."+p.getName()+".value", p.getValue());
-            fc.set("npc."+snpc.getId()+".properties."+p.getName()+".signature", p.getSignature());
+            fc.set("npc."+id+".properties."+p.getName()+".value", p.getValue());
+            fc.set("npc."+id+".properties."+p.getName()+".signature", p.getSignature());
         }
         for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()){
             ItemStack is = snpc.getEquipment().get(nes);
-            fc.set("npc."+snpc.getId()+".equipment."+nes.toString(), ItemUtils.itemToString(is));
+            fc.set("npc."+id+".equipment."+nes.toString(), ItemUtils.itemToString(is));
         }
-        fc.set("npc."+snpc.getId()+".loc.x", npc.getLocation().getX());
-        fc.set("npc."+snpc.getId()+".loc.y", npc.getLocation().getY());
-        fc.set("npc."+snpc.getId()+".loc.z", npc.getLocation().getZ());
-        fc.set("npc."+snpc.getId()+".loc.u", npc.getLocation().getYaw());
-        fc.set("npc."+snpc.getId()+".loc.p", npc.getLocation().getPitch());
-        fc.set("npc."+snpc.getId()+".loc.w", npc.getLocation().getWorld().getName());
+        fc.set("npc."+id+".loc.x", npc.getLocation().getX());
+        fc.set("npc."+id+".loc.y", npc.getLocation().getY());
+        fc.set("npc."+id+".loc.z", npc.getLocation().getZ());
+        fc.set("npc."+id+".loc.u", npc.getLocation().getYaw());
+        fc.set("npc."+id+".loc.p", npc.getLocation().getPitch());
+        fc.set("npc."+id+".loc.w", npc.getLocation().getWorld().getName());
         saveFile(fc, npcFile);
     }
 
-    public static void removeNPC(SNPC snpc){
+    public static void removeNPC(int id){
         FileConfiguration fc = YamlConfiguration.loadConfiguration(npcFile);
-        fc.set("npc."+snpc.getId(), null);
+        fc.set("npc."+id, null);
         saveFile(fc, npcFile);
     }
 

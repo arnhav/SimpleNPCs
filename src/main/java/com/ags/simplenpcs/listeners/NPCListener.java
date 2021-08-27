@@ -24,7 +24,8 @@ public class NPCListener implements Listener {
     public void onNPCInteract(PlayerNPCInteractEvent event){
         Player player = event.getPlayer();
         NPC npc = event.getNPC();
-        SNPC snpc = NPCManager.npcs.get(npc);
+        Integer id = NPCManager.npcs.get(npc);
+        SNPC snpc = NPCManager.snpcs.get(id);
         PlayerNPCInteractEvent.EntityUseAction action = event.getUseAction();
         PlayerNPCInteractEvent.Hand hand = event.getHand();
 
@@ -48,7 +49,7 @@ public class NPCListener implements Listener {
             NPC selected = NPCManager.selectedNPC.get(player);
             if (selected != null && selected.getEntityId()==npc.getEntityId()) return;
             NPCManager.selectedNPC.put(player, npc);
-            player.sendMessage(Component.text(ChatColor.YELLOW+"You have selected NPC: "+snpc.getId()));
+            player.sendMessage(Component.text(ChatColor.YELLOW+"You have selected NPC: "+id));
         }
     }
 

@@ -4,8 +4,9 @@ import com.ags.simplenpcs.data.FileManager;
 import com.ags.simplenpcs.objects.SNPC;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.NPCPool;
-import com.github.juliarn.npc.modifier.MetadataModifier;
 import com.github.juliarn.npc.profile.Profile;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,7 +17,8 @@ public class NPCManager {
 
     private static NPCPool npcPool;
 
-    public static HashMap<NPC, SNPC> npcs = new HashMap<>();
+    public static BiMap<NPC, Integer> npcs = HashBiMap.create();
+    public static HashMap<Integer, SNPC> snpcs = new HashMap<>();
     public static WeakHashMap<Player, NPC> selectedNPC = new WeakHashMap<>();
 
     public NPCManager(JavaPlugin plugin) {
@@ -34,10 +36,9 @@ public class NPCManager {
             .imitatePlayer(false)
             .lookAtPlayer(false)
             .build(npcPool);
-        npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true).send();
-        SNPC snpc = new SNPC(FileManager.lastNPCID++);
-        npcs.put(npc, snpc);
-        FileManager.saveNPC(npc, snpc);
+        SNPC snpc = new SNPC();
+        npcs.put(npc, FileManager.lastNPCID++);
+        FileManager.saveNPC(FileManager.lastNPCID++, npc, snpc);
     }
 
     public static NPC spawnNPC(Location location, Profile profile){
@@ -47,29 +48,28 @@ public class NPCManager {
                 .imitatePlayer(false)
                 .lookAtPlayer(false)
                 .build(npcPool);
-        npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true).send();
-        SNPC snpc = new SNPC(FileManager.lastNPCID++);
-        npcs.put(npc, snpc);
+        SNPC snpc = new SNPC();
+        npcs.put(npc, FileManager.lastNPCID++);
         return npc;
     }
 
-    public static NPC spawnNPC(Location location, Profile profile, SNPC snpc){
+    public static NPC spawnNPC(Location location, Profile profile, int id, SNPC snpc){
         NPC npc= NPC.builder()
                 .profile(profile)
                 .location(location)
                 .imitatePlayer(false)
                 .lookAtPlayer(false)
                 .build(npcPool);
-        npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true).send();
-        npcs.put(npc, snpc);
+        npcs.put(npc, id);
+        snpcs.put(id, snpc);
         return npc;
     }
 
     public void removeNPC(NPC npc, boolean full){
-        SNPC snpc = npcs.get(npc);
+        Integer id = npcs.get(npc);
         npcPool.removeNPC(npc.getEntityId());
         if (!full) return;
-        FileManager.removeNPC(snpc);
+        FileManager.removeNPC(id);
         npcs.remove(npc);
     }
 
