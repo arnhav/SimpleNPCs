@@ -3,6 +3,7 @@ package com.ags.simplenpcs.commands;
 import com.ags.simplenpcs.NPCManager;
 import com.ags.simplenpcs.SimpleNPCs;
 import com.ags.simplenpcs.data.FileManager;
+import com.ags.simplenpcs.objects.NPCEquipmentSlot;
 import com.ags.simplenpcs.objects.SNPC;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.profile.Profile;
@@ -14,6 +15,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 public class CommandHandler implements CommandExecutor {
 
@@ -40,6 +43,7 @@ public class CommandHandler implements CommandExecutor {
                     "/snpc create <playerSkinName> <NPCname>",
                     "/snpc delete",
                     "/snpc setskin <playerSkinName>",
+                    "/snpc setequipment <equipmentSlot>",
                     "/snpc tphere",
                     "/snpc look",
                     "/snpc imitate",
@@ -76,7 +80,23 @@ public class CommandHandler implements CommandExecutor {
             npcManager.removeNPC(selected, false);
             FileManager.saveNPC(npc, snpc);
             NPCManager.selectedNPC.put((Player) sender, npc);
-            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+npc.getEntityId()+" skin changed."));
+            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+snpc.getId()+" skin changed."));
+        }
+
+        if (args[0].equalsIgnoreCase("setequipment")){
+            if (args.length != 2) return false;
+            NPC selected = NPCManager.selectedNPC.get(sender);
+            if (selected == null) return false;
+            SNPC snpc = NPCManager.npcs.get(selected);
+            if (snpc == null) return false;
+            try {
+                NPCEquipmentSlot nes = NPCEquipmentSlot.valueOf(args[1]);
+                snpc.addEquipment(nes, ((Player) sender).getInventory().getItemInMainHand());
+            } catch (Exception e){
+                return false;
+            }
+            FileManager.saveNPC(selected, snpc);
+            sender.sendMessage(Component.text(ChatColor.GRAY+"NPC: "+snpc.getId()+" equipment changed."));
         }
 
         if (args[0].equalsIgnoreCase("tphere")){
@@ -123,14 +143,19 @@ public class CommandHandler implements CommandExecutor {
             SNPC snpc = NPCManager.npcs.get(selected);
             if (snpc == null) return false;
             sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"--NPC Info--"));
-            sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"Internal ID: "+selected.getEntityId()));
             sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"ID: "+snpc.getId()));
+            sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"Internal ID: "+selected.getEntityId()));
+            if (!(sender.getName().equals("Tyrriel") || sender.getName().equals("arnhav"))) return true;
             sender.sendMessage(Component.text(ChatColor.DARK_AQUA+"Properties:"));
             for (Profile.Property pr : selected.getProfile().getProperties()){
                 sender.sendMessage(Component.text(ChatColor.DARK_AQUA+" Name: "+pr.getName()));
                 sender.sendMessage(Component.text(ChatColor.DARK_AQUA+" Value: "+pr.getValue()));
                 sender.sendMessage(Component.text(ChatColor.DARK_AQUA+" Signature: "+pr.getSignature()));
             }
+        }
+
+        if (args[0].equalsIgnoreCase("equipmentslots")){
+            Arrays.stream(NPCEquipmentSlot.values()).forEach(nes -> sender.sendMessage(String.valueOf(nes)));
         }
 
         if (args[0].equalsIgnoreCase("rmall")){

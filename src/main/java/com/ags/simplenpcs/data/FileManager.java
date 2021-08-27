@@ -2,7 +2,9 @@ package com.ags.simplenpcs.data;
 
 import com.ags.simplenpcs.NPCManager;
 import com.ags.simplenpcs.SimpleNPCs;
+import com.ags.simplenpcs.objects.NPCEquipmentSlot;
 import com.ags.simplenpcs.objects.SNPC;
+import com.ags.simplenpcs.util.ItemUtils;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.profile.Profile;
 import org.bukkit.Bukkit;
@@ -11,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -74,19 +77,32 @@ public class FileManager {
             SNPC snpc = new SNPC(id);
 
             String name = cs.getString(p+".name");
+            boolean look = cs.getBoolean(p+".look");
+            boolean imitate = cs.getBoolean(p+".imitate");
 
-            ConfigurationSection pcs = cs.getConfigurationSection(p+".properties");
-            if (pcs == null) continue;
+            ConfigurationSection tcs = cs.getConfigurationSection(p+".properties");
+            if (tcs == null) continue;
             List<Profile.Property> properties = new ArrayList<>();
-            for (String ps : pcs.getKeys(false)){
-                String value = pcs.getString(ps+".value");
-                String signature = pcs.getString(ps+".signature");
+            for (String ts : tcs.getKeys(false)){
+                String value = tcs.getString(ts+".value");
+                String signature = tcs.getString(ts+".signature");
                 if (value == null || signature == null) continue;
-                Profile.Property property = new Profile.Property(ps, value, signature);
+                Profile.Property property = new Profile.Property(ts, value, signature);
                 properties.add(property);
             }
 
             Profile profile = NPCManager.createProfile(name==null?"NPC":name, properties);
+
+            tcs = cs.getConfigurationSection(p+".equipment");
+            if (tcs != null){
+                for (String ts : tcs.getKeys(false)){
+                    NPCEquipmentSlot nes = NPCEquipmentSlot.valueOf(ts);
+                    String ti = tcs.getString(ts);
+                    ItemStack is = ItemUtils.stringToItem(ti);
+
+                    snpc.addEquipment(nes, is);
+                }
+            }
 
             double x = cs.getDouble(p+".loc.x");
             double y = cs.getDouble(p+".loc.y");
@@ -101,11 +117,12 @@ public class FileManager {
 
             NPC npc = NPCManager.spawnNPC(location, profile, snpc);
 
-            boolean look = cs.getBoolean(p+".look");
-            boolean imitate = cs.getBoolean(p+".imitate");
-
             npc.setLookAtPlayer(look);
             npc.setImitatePlayer(imitate);
+
+            for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()){
+                npc.equipment().queue(nes.getIndex(), snpc.getEquipment().get(nes)).send();
+            }
         }
     }
 
@@ -157,6 +174,10 @@ public class FileManager {
         for (Profile.Property p : npc.getProfile().getProperties()){
             fc.set("npc."+snpc.getId()+".properties."+p.getName()+".value", p.getValue());
             fc.set("npc."+snpc.getId()+".properties."+p.getName()+".signature", p.getSignature());
+        }
+        for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()){
+            ItemStack is = snpc.getEquipment().get(nes);
+            fc.set("npc."+snpc.getId()+".equipment."+nes.toString(), ItemUtils.itemToString(is));
         }
         fc.set("npc."+snpc.getId()+".loc.x", npc.getLocation().getX());
         fc.set("npc."+snpc.getId()+".loc.y", npc.getLocation().getY());
