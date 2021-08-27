@@ -1,6 +1,5 @@
 package com.ags.simplenpcs;
 
-import com.ags.simplenpcs.data.FileManager;
 import com.ags.simplenpcs.objects.SNPC;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.NPCPool;
@@ -15,11 +14,13 @@ import java.util.*;
 
 public class NPCManager {
 
-    private static NPCPool npcPool;
+    private NPCPool npcPool;
 
-    public static BiMap<NPC, Integer> npcs = HashBiMap.create();
-    public static HashMap<Integer, SNPC> snpcs = new HashMap<>();
-    public static WeakHashMap<Player, NPC> selectedNPC = new WeakHashMap<>();
+    private int lastNPCID = -1;
+
+    public BiMap<NPC, Integer> npcs = HashBiMap.create();
+    public HashMap<Integer, SNPC> snpcs = new HashMap<>();
+    public WeakHashMap<Player, NPC> selectedNPC = new WeakHashMap<>();
 
     public NPCManager(JavaPlugin plugin) {
         npcPool = NPCPool.builder(plugin)
@@ -29,7 +30,15 @@ public class NPCManager {
                 .build();
     }
 
-    public void addNPC(Location location, Profile profile){
+    public void setLastNPCID(int lastNPCID) {
+        this.lastNPCID = lastNPCID;
+    }
+
+    public int getLastNPCID() {
+        return lastNPCID;
+    }
+
+    public NPC addNPC(Location location, Profile profile){
         NPC npc= NPC.builder()
             .profile(profile)
             .location(location)
@@ -37,14 +46,14 @@ public class NPCManager {
             .lookAtPlayer(false)
             .build(npcPool);
         SNPC snpc = new SNPC();
-        int id = FileManager.lastNPCID++;
+        int id = lastNPCID++;
         npcs.put(npc, id);
         snpcs.put(id, snpc);
-        FileManager.saveNPC(id, npc, snpc);
+        return npc;
     }
 
     // Used by the API
-    public static NPC spawnNPC(Location location, Profile profile){
+    public NPC spawnNPC(Location location, Profile profile){
         NPC npc= NPC.builder()
                 .profile(profile)
                 .location(location)
@@ -52,15 +61,14 @@ public class NPCManager {
                 .lookAtPlayer(false)
                 .build(npcPool);
         SNPC snpc = new SNPC();
-        int id = FileManager.lastNPCID++;
+        int id = lastNPCID++;
         npcs.put(npc, id);
         snpcs.put(id, snpc);
-        FileManager.saveNPC(id, npc, snpc);
         return npc;
     }
 
     // Used by internal stuff like commands and loading from the file
-    public static NPC spawnNPC(Location location, Profile profile, int id, SNPC snpc){
+    public NPC spawnNPC(Location location, Profile profile, int id, SNPC snpc){
         NPC npc= NPC.builder()
                 .profile(profile)
                 .location(location)
@@ -76,7 +84,6 @@ public class NPCManager {
         Integer id = npcs.get(npc);
         npcPool.removeNPC(npc.getEntityId());
         if (!full) return;
-        FileManager.removeNPC(id);
         npcs.remove(npc);
         snpcs.remove(id);
     }
@@ -102,11 +109,23 @@ public class NPCManager {
         return profile;
     }
 
-    public static Profile createProfile(String playerName, List<Profile.Property> list){
+    public Profile createProfile(String playerName, List<Profile.Property> list){
         Random random = new Random();
         Profile profile = new Profile(playerName, list);
         profile.complete(false);
         profile.setUniqueId(new UUID(random.nextLong(), 0));
         return profile;
+    }
+
+    public BiMap<NPC, Integer> getNpcs() {
+        return npcs;
+    }
+
+    public HashMap<Integer, SNPC> getSnpcs() {
+        return snpcs;
+    }
+
+    public WeakHashMap<Player, NPC> getSelectedNPC() {
+        return selectedNPC;
     }
 }

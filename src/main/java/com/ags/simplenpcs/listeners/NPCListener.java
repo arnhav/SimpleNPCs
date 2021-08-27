@@ -20,12 +20,18 @@ import org.bukkit.inventory.EquipmentSlot;
 
 public class NPCListener implements Listener {
 
+    private NPCManager npcManager;
+
+    public NPCListener(NPCManager npcManager){
+        this.npcManager = npcManager;
+    }
+
     @EventHandler
     public void onNPCInteract(PlayerNPCInteractEvent event){
         Player player = event.getPlayer();
         NPC npc = event.getNPC();
-        Integer id = NPCManager.npcs.get(npc);
-        SNPC snpc = NPCManager.snpcs.get(id);
+        Integer id = npcManager.getNpcs().get(npc);
+        SNPC snpc = npcManager.getSnpcs().get(id);
         PlayerNPCInteractEvent.EntityUseAction action = event.getUseAction();
         PlayerNPCInteractEvent.Hand hand = event.getHand();
 
@@ -46,9 +52,9 @@ public class NPCListener implements Listener {
             EntityEquipment ee = player.getEquipment();
             if (ee == null) return;
             if (ee.getItem(es).getType() != Material.STICK) return;
-            NPC selected = NPCManager.selectedNPC.get(player);
+            NPC selected = npcManager.getSelectedNPC().get(player);
             if (selected != null && selected.getEntityId()==npc.getEntityId()) return;
-            NPCManager.selectedNPC.put(player, npc);
+            npcManager.getSelectedNPC().put(player, npc);
             player.sendMessage(Component.text(ChatColor.YELLOW+"You have selected NPC: "+id));
         }
     }

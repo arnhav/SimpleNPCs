@@ -21,14 +21,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public record FileManager(JavaPlugin plugin) {
+public class FileManager {
 
-    private static File npcFile;
+    private JavaPlugin plugin;
+    private NPCManager npcManager;
 
-    public static int lastNPCID = -1;
+    private File npcFile;
 
-    public FileManager(JavaPlugin plugin) {
+    public FileManager(JavaPlugin plugin, NPCManager npcManager) {
         this.plugin = plugin;
+        this.npcManager = npcManager;
         createConfig();
         createNPCsFile();
     }
@@ -53,10 +55,11 @@ public record FileManager(JavaPlugin plugin) {
 
     private void loadConfigFile() {
         FileConfiguration fc = plugin.getConfig();
-        lastNPCID = fc.getInt("lastNPCID");
+        int lastNPCID = fc.getInt("lastNPCID");
+        npcManager.setLastNPCID(lastNPCID);
     }
 
-    public void updateLastNPCID() {
+    public void updateLastNPCID(int lastNPCID) {
         FileConfiguration fc = plugin.getConfig();
         fc.set("lastNPCID", lastNPCID);
         plugin.saveConfig();
@@ -103,7 +106,7 @@ public record FileManager(JavaPlugin plugin) {
                 properties.add(property);
             }
 
-            Profile profile = NPCManager.createProfile(name == null ? "NPC" : name, properties);
+            Profile profile = npcManager.createProfile(name == null ? "NPC" : name, properties);
 
             tcs = cs.getConfigurationSection(p + ".equipment");
             if (tcs != null) {
@@ -127,7 +130,7 @@ public record FileManager(JavaPlugin plugin) {
             if (world == null) continue;
             Location location = new Location(world, x, y, z, yaw, pitch);
 
-            NPC npc = NPCManager.spawnNPC(location, profile, id, snpc);
+            NPC npc = npcManager.spawnNPC(location, profile, id, snpc);
 
             npc.setLookAtPlayer(look);
             npc.setImitatePlayer(imitate);
@@ -138,11 +141,12 @@ public record FileManager(JavaPlugin plugin) {
         }
     }
 
-    public static void loadCitizensFile() {
+    public void loadCitizensFile() {
         File file = new File(SimpleNPCs.instance().getDataFolder(), "saves.yml");
         if (!file.exists()) return;
         FileConfiguration fc = YamlConfiguration.loadConfiguration(file);
-        lastNPCID = fc.getInt("last-created-npc-id");
+        int lastNPCID = fc.getInt("last-created-npc-id");
+        npcManager.setLastNPCID(lastNPCID);
         ConfigurationSection cs = fc.getConfigurationSection("npc");
         if (cs == null) return;
         for (String p : cs.getKeys(false)) {
@@ -170,16 +174,16 @@ public record FileManager(JavaPlugin plugin) {
             if (value == null || signature == null) continue;
 
             Profile.Property property = new Profile.Property("textures", value, signature);
-            Profile profile = NPCManager.createProfile(name == null ? "NPC" : name, Collections.singletonList(property));
+            Profile profile = npcManager.createProfile(name == null ? "NPC" : name, Collections.singletonList(property));
 
-            NPC npc = NPCManager.spawnNPC(location, profile, id, snpc);
+            NPC npc = npcManager.spawnNPC(location, profile, id, snpc);
             npc.setLookAtPlayer(look);
 
             saveNPC(id, npc, snpc);
         }
     }
 
-    public static void saveNPC(int id, NPC npc, SNPC snpc) {
+    public void saveNPC(int id, NPC npc, SNPC snpc) {
         FileConfiguration fc = YamlConfiguration.loadConfiguration(npcFile);
         fc.set("npc." + id + ".name", npc.getProfile().getName());
         fc.set("npc." + id + ".look", npc.isLookAtPlayer());
@@ -201,13 +205,13 @@ public record FileManager(JavaPlugin plugin) {
         saveFile(fc, npcFile);
     }
 
-    public static void removeNPC(int id) {
+    public void removeNPC(int id) {
         FileConfiguration fc = YamlConfiguration.loadConfiguration(npcFile);
         fc.set("npc." + id, null);
         saveFile(fc, npcFile);
     }
 
-    private static void saveFile(FileConfiguration fc, File file) {
+    private void saveFile(FileConfiguration fc, File file) {
         try {
             fc.save(file);
         } catch (Exception e) {

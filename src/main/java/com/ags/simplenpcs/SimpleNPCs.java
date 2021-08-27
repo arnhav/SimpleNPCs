@@ -21,12 +21,11 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
     public void onEnable() {
         // Plugin startup logic
         npcManager = new NPCManager(this);
+        fileManager = new FileManager(this, npcManager);
 
-        getCommand("snpc").setExecutor(new CommandHandler(npcManager));
+        getCommand("snpc").setExecutor(new CommandHandler(npcManager, fileManager));
 
-        getServer().getPluginManager().registerEvents(new NPCListener(), this);
-
-        fileManager = new FileManager(this);
+        getServer().getPluginManager().registerEvents(new NPCListener(npcManager), this);
 
         getServer().getServicesManager().register(SimpleNPCService.class, this, this, ServicePriority.Normal);
     }
@@ -34,7 +33,7 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        fileManager.updateLastNPCID();
+        fileManager.updateLastNPCID(npcManager.getLastNPCID());
     }
 
     public static SimpleNPCs instance(){
@@ -43,27 +42,33 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
 
     @Override
     public NPC getNPC(int id) {
-        return NPCManager.npcs.inverse().get(id);
+        return npcManager.getNpcs().inverse().get(id);
     }
 
     @Override
     public int getID(NPC npc) {
-        return NPCManager.npcs.get(npc);
+        return npcManager.getNpcs().get(npc);
     }
 
     @Override
     public SNPC getSNPC(int id) {
-        return NPCManager.snpcs.get(id);
+        return npcManager.getSnpcs().get(id);
     }
 
     @Override
     public NPC createNPC(Profile p, Location l) {
-        return NPCManager.spawnNPC(l, p);
+        NPC npc = npcManager.spawnNPC(l, p);
+        int id = getID(npc);
+        SNPC snpc = getSNPC(id);
+        fileManager.saveNPC(id, npc, snpc);
+        return npc;
     }
 
     @Override
     public void deleteNPC(NPC n) {
+        int id = getID(n);
         npcManager.removeNPC(n, true);
+        fileManager.removeNPC(id);
     }
 
     @Override
