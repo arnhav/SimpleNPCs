@@ -41,6 +41,11 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
     }
 
     @Override
+    public NPC getNPC(int id) {
+        return NPCManager.npcs.inverse().get(id);
+    }
+
+    @Override
     public void createNPC(Profile p, Location l) {
         NPCManager.spawnNPC(l, p);
     }

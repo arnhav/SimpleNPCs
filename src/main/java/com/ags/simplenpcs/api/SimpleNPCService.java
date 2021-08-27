@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 
 public interface SimpleNPCService {
 
+    public NPC getNPC(int id);
+
     public void createNPC(Profile p, Location l);
 
     public void deleteNPC(NPC n);
