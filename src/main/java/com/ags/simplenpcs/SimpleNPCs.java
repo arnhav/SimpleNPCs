@@ -60,7 +60,7 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
         NPC npc = npcManager.spawnNPC(l, p);
         int id = getID(npc);
         SNPC snpc = getSNPC(id);
-        fileManager.saveNPC(id, npc, snpc);
+        fileManager.saveNPC(id, npc, snpc, true);
         return npc;
     }
 

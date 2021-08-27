@@ -59,7 +59,7 @@ public class CommandHandler implements CommandExecutor {
             NPC npc = npcManager.addNPC(((Player) sender).getLocation(), profile);
             int id = npcManager.getNpcs().get(npc);
             SNPC snpc = npcManager.getSnpcs().get(id);
-            fileManager.saveNPC(id, npc, snpc);
+            fileManager.saveNPC(id, npc, snpc, true);
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + args[2] + " created!"));
         }
 
@@ -85,8 +85,8 @@ public class CommandHandler implements CommandExecutor {
             NPC npc = npcManager.spawnNPC(selected.getLocation(), profile, id, snpc);
             npc.setLookAtPlayer(selected.isLookAtPlayer());
             npc.setImitatePlayer(selected.isImitatePlayer());
-            npcManager.removeNPC(selected, false);
-            fileManager.saveNPC(id, npc, snpc);
+            npcManager.removeNPC(selected, true);
+            fileManager.saveNPC(id, npc, snpc, true);
             npcManager.getSelectedNPC().put((Player) sender, npc);
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " skin changed."));
         }
@@ -104,7 +104,7 @@ public class CommandHandler implements CommandExecutor {
             } catch (Exception e) {
                 return false;
             }
-            fileManager.saveNPC(id, selected, snpc);
+            fileManager.saveNPC(id, selected, snpc, false);
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " equipment changed."));
         }
 
@@ -118,8 +118,8 @@ public class CommandHandler implements CommandExecutor {
             NPC npc = npcManager.spawnNPC(((Player) sender).getLocation(), selected.getProfile(), id, snpc);
             npc.setLookAtPlayer(selected.isLookAtPlayer());
             npc.setImitatePlayer(selected.isImitatePlayer());
-            npcManager.removeNPC(selected, false);
-            fileManager.saveNPC(id, npc, snpc);
+            npcManager.removeNPC(selected, true);
+            fileManager.saveNPC(id, npc, snpc, true);
             npcManager.getSelectedNPC().put((Player) sender, npc);
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " changed location."));
         }
@@ -132,7 +132,7 @@ public class CommandHandler implements CommandExecutor {
             SNPC snpc = npcManager.getSnpcs().get(id);
             if (snpc == null) return false;
             selected.setLookAtPlayer(!selected.isLookAtPlayer());
-            fileManager.saveNPC(id, selected, snpc);
+            fileManager.saveNPC(id, selected, snpc, false);
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " toggled look."));
         }
 
@@ -144,7 +144,7 @@ public class CommandHandler implements CommandExecutor {
             SNPC snpc = npcManager.getSnpcs().get(id);
             if (snpc == null) return false;
             selected.setImitatePlayer(!selected.isImitatePlayer());
-            fileManager.saveNPC(id, selected, snpc);
+            fileManager.saveNPC(id, selected, snpc, false);
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " toggled imitate."));
         }
 
@@ -172,7 +172,14 @@ public class CommandHandler implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("rmall")) {
-            npcManager.removeNPCs();
+            for (int i : npcManager.getNpcs().values()){
+                fileManager.removeNPC(i);
+            }
+            npcManager.removeNPCs(true);
+        }
+
+        if (args[0].equalsIgnoreCase("rmtmp")){
+            npcManager.removeNPCs(false);
         }
 
         if (args[0].equalsIgnoreCase("migrateCitizens")) {

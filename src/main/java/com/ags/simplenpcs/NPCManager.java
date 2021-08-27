@@ -88,8 +88,8 @@ public class NPCManager {
         snpcs.remove(id);
     }
 
-    public void removeNPCs(){
-        npcPool.getNPCs().forEach(npc -> removeNPC(npc, false));
+    public void removeNPCs(boolean full){
+        npcPool.getNPCs().forEach(npc -> removeNPC(npc, full));
     }
 
     public void hideNPCForPlayer(NPC npc, Player player){

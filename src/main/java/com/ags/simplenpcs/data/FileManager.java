@@ -155,12 +155,12 @@ public class FileManager {
 
             String name = cs.getString(p + ".name");
 
-            double x = cs.getDouble(p + ".traits.location.x");
-            double y = cs.getDouble(p + ".traits.location.y");
-            double z = cs.getDouble(p + ".traits.location.z");
-            float yaw = (float) cs.getDouble(p + ".traits.location.yaw");
-            float pitch = (float) cs.getDouble(p + ".traits.location.pitch");
-            String worldName = cs.getString(p + ".traits.location.world");
+            double x = Double.parseDouble(cs.getString(p+".traits.location.x"));
+            double y = Double.parseDouble(cs.getString(p+".traits.location.y"));
+            double z = Double.parseDouble(cs.getString(p+".traits.location.z"));
+            float yaw = Float.parseFloat(cs.getString(p+".traits.location.yaw"));
+            float pitch = Float.parseFloat(cs.getString(p+".traits.location.pitch"));
+            String worldName = cs.getString(p+".traits.location.world");
             if (worldName == null) continue;
             World world = Bukkit.getWorld(worldName);
             if (world == null) continue;
@@ -179,11 +179,13 @@ public class FileManager {
             NPC npc = npcManager.spawnNPC(location, profile, id, snpc);
             npc.setLookAtPlayer(look);
 
-            saveNPC(id, npc, snpc);
+            saveNPC(id, npc, snpc, true);
         }
+
+        System.out.println("Loaded "+ npcManager.getNpcs().size() + " NPCs!");
     }
 
-    public void saveNPC(int id, NPC npc, SNPC snpc) {
+    public void saveNPC(int id, NPC npc, SNPC snpc, boolean update) {
         FileConfiguration fc = YamlConfiguration.loadConfiguration(npcFile);
         fc.set("npc." + id + ".name", npc.getProfile().getName());
         fc.set("npc." + id + ".look", npc.isLookAtPlayer());
@@ -203,6 +205,10 @@ public class FileManager {
         fc.set("npc." + id + ".loc.p", npc.getLocation().getPitch());
         fc.set("npc." + id + ".loc.w", npc.getLocation().getWorld().getName());
         saveFile(fc, npcFile);
+
+        if (!update) return;
+        npcManager.getNpcs().put(npc, id);
+        npcManager.getSnpcs().put(id, snpc);
     }
 
     public void removeNPC(int id) {
