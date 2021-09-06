@@ -1,5 +1,9 @@
 # SimpleNPCs
-A lightweight alternative to Citizens
+A lightweight alternative to Citizens.
+
+The system uses this library: https://github.com/juliarn/NPC-Lib
+
+Requires ProtocolLib as a dependency.
 
 [![](https://jitpack.io/v/arnhav11/SimpleNPCs.svg)](https://jitpack.io/#arnhav11/SimpleNPCs)
 
