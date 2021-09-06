@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class NPCLeftClickEvent extends PlayerNPCEvent {
+public class NPCLeftClickEvent extends NPCClickEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private boolean isCancelled;

@@ -24,9 +24,9 @@ public class NPCManager {
 
     public NPCManager(JavaPlugin plugin) {
         npcPool = NPCPool.builder(plugin)
-                .spawnDistance(60)
-                .actionDistance(30)
-                .tabListRemoveTicks(20)
+                .spawnDistance(50)
+                .actionDistance(25)
+                .tabListRemoveTicks(10)
                 .build();
     }
 

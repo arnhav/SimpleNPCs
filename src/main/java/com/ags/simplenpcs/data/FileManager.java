@@ -135,9 +135,9 @@ public class FileManager {
             npc.setLookAtPlayer(look);
             npc.setImitatePlayer(imitate);
 
-            for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()) {
+            /*for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()) {
                 npc.equipment().queue(nes.getIndex(), snpc.getEquipment().get(nes)).send();
-            }
+            }*/
         }
     }
 
