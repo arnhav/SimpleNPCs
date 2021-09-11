@@ -46,7 +46,8 @@ public class NPCManager {
             .lookAtPlayer(false)
             .build(npcPool);
         SNPC snpc = new SNPC();
-        int id = lastNPCID++;
+        lastNPCID+=1;
+        int id = lastNPCID;
         npcs.put(npc, id);
         snpcs.put(id, snpc);
         return npc;
@@ -61,7 +62,8 @@ public class NPCManager {
                 .lookAtPlayer(false)
                 .build(npcPool);
         SNPC snpc = new SNPC();
-        int id = lastNPCID++;
+        lastNPCID+=1;
+        int id = lastNPCID;
         npcs.put(npc, id);
         snpcs.put(id, snpc);
         return npc;
