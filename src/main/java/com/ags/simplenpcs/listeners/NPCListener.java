@@ -41,12 +41,6 @@ public class NPCListener implements Listener {
             NPCLeftClickEvent nlce = new NPCLeftClickEvent(player,npc);
             if (nlce.isCancelled()) return;
             Bukkit.getPluginManager().callEvent(nlce);
-        }
-
-        if (action == PlayerNPCInteractEvent.EntityUseAction.INTERACT_AT){
-            NPCRightClickEvent nrce = new NPCRightClickEvent(player, npc);
-            if (nrce.isCancelled()) return;
-            Bukkit.getPluginManager().callEvent(nrce);
 
             EquipmentSlot es = EquipmentSlot.valueOf(hand==PlayerNPCInteractEvent.Hand.MAIN_HAND?"HAND":hand.toString());
             EntityEquipment ee = player.getEquipment();
@@ -56,6 +50,12 @@ public class NPCListener implements Listener {
             if (selected != null && selected.getEntityId()==npc.getEntityId()) return;
             npcManager.getSelectedNPC().put(player, npc);
             player.sendMessage(Component.text(ChatColor.YELLOW+"You have selected NPC: "+id));
+        }
+
+        if (action == PlayerNPCInteractEvent.EntityUseAction.INTERACT_AT){
+            NPCRightClickEvent nrce = new NPCRightClickEvent(player, npc);
+            if (nrce.isCancelled()) return;
+            Bukkit.getPluginManager().callEvent(nrce);
         }
     }
 
