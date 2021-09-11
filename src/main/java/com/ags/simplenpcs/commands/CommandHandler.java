@@ -80,12 +80,12 @@ public class CommandHandler implements CommandExecutor {
             Integer id = npcManager.getNpcs().get(selected);
             SNPC snpc = npcManager.getSnpcs().get(id);
             if (snpc == null) return false;
+            npcManager.removeNPC(selected, true);
             Profile current = selected.getProfile();
             Profile profile = npcManager.createProfile(args[1], current.getName());
             NPC npc = npcManager.spawnNPC(selected.getLocation(), profile, id, snpc);
             npc.setLookAtPlayer(selected.isLookAtPlayer());
             npc.setImitatePlayer(selected.isImitatePlayer());
-            npcManager.removeNPC(selected, true);
             fileManager.saveNPC(id, npc, snpc, true);
             npcManager.getSelectedNPC().put((Player) sender, npc);
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " skin changed."));
@@ -115,10 +115,10 @@ public class CommandHandler implements CommandExecutor {
             Integer id = npcManager.getNpcs().get(selected);
             SNPC snpc = npcManager.getSnpcs().get(id);
             if (snpc == null) return false;
+            npcManager.removeNPC(selected, true);
             NPC npc = npcManager.spawnNPC(((Player) sender).getLocation(), selected.getProfile(), id, snpc);
             npc.setLookAtPlayer(selected.isLookAtPlayer());
             npc.setImitatePlayer(selected.isImitatePlayer());
-            npcManager.removeNPC(selected, true);
             fileManager.saveNPC(id, npc, snpc, true);
             npcManager.getSelectedNPC().put((Player) sender, npc);
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " changed location."));
