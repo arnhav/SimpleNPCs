@@ -54,8 +54,13 @@ public class CommandHandler implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("create")) {
-            if (args.length != 3) return false;
-            Profile profile = npcManager.createProfile(args[1], args[2]);
+            if (args.length < 3) return false;
+            StringBuilder npcName = new StringBuilder();
+            for (int i = 2; i < args.length; i++){
+                npcName.append(args[i]);
+                if (i != args.length-1) npcName.append(" ");
+            }
+            Profile profile = npcManager.createProfile(args[1], npcName.toString());
             NPC npc = npcManager.addNPC(((Player) sender).getLocation(), profile);
             int id = npcManager.getNpcs().get(npc);
             SNPC snpc = npcManager.getSnpcs().get(id);
@@ -146,6 +151,23 @@ public class CommandHandler implements CommandExecutor {
             selected.setImitatePlayer(!selected.isImitatePlayer());
             fileManager.saveNPC(id, selected, snpc, false);
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " toggled imitate."));
+        }
+
+        if (args[0].equalsIgnoreCase("tp")) {
+            if (args.length != 1) return false;
+            NPC selected = npcManager.getSelectedNPC().get(sender);
+            if (selected == null) return false;
+            ((Player) sender).teleport(selected.getLocation());
+        }
+
+        if (args[0].equalsIgnoreCase("sel")) {
+            if (args.length != 2) return false;
+            NPC selected = npcManager.getSelectedNPC().get(sender);
+            Integer id = Integer.parseInt(args[1]);
+            NPC npc = npcManager.getNpcs().inverse().get(id);
+            if (selected != null && selected.getEntityId() == npc.getEntityId()) return false;
+            npcManager.getSelectedNPC().put((Player) sender, npc);
+            sender.sendMessage(Component.text(ChatColor.YELLOW+"You have selected NPC: "+id));
         }
 
         if (args[0].equalsIgnoreCase("info")) {
