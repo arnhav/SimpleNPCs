@@ -6,6 +6,7 @@ import com.ags.simplenpcs.data.FileManager;
 import com.ags.simplenpcs.objects.NPCEquipmentSlot;
 import com.ags.simplenpcs.objects.SNPC;
 import com.github.juliarn.npc.NPC;
+import com.github.juliarn.npc.modifier.MetadataModifier;
 import com.github.juliarn.npc.profile.Profile;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -14,6 +15,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -49,6 +51,8 @@ public class CommandHandler implements CommandExecutor {
                     "/snpc tphere",
                     "/snpc look",
                     "/snpc imitate",
+                    "/snpc tp",
+                    "/snpc sel <id>",
                     "/snpc info"
             );
         }
@@ -104,8 +108,11 @@ public class CommandHandler implements CommandExecutor {
             SNPC snpc = npcManager.getSnpcs().get(id);
             if (snpc == null) return false;
             try {
+                ItemStack itemStack = ((Player) sender).getInventory().getItemInMainHand();
                 NPCEquipmentSlot nes = NPCEquipmentSlot.valueOf(args[1]);
-                snpc.addEquipment(nes, ((Player) sender).getInventory().getItemInMainHand());
+                snpc.addEquipment(nes, itemStack);
+
+                selected.equipment().queue(nes.getIndex(), itemStack).send();
             } catch (Exception e) {
                 return false;
             }
