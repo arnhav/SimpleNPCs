@@ -6,7 +6,6 @@ import com.ags.simplenpcs.data.FileManager;
 import com.ags.simplenpcs.objects.NPCEquipmentSlot;
 import com.ags.simplenpcs.objects.SNPC;
 import com.github.juliarn.npc.NPC;
-import com.github.juliarn.npc.modifier.MetadataModifier;
 import com.github.juliarn.npc.profile.Profile;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -55,6 +54,11 @@ public class CommandHandler implements CommandExecutor {
                     "/snpc sel <id>",
                     "/snpc info"
             );
+        }
+
+        if (args[0].equalsIgnoreCase("reload")){
+            npcManager.removeNPCs(true);
+            fileManager = new FileManager(SimpleNPCs.instance(), npcManager);
         }
 
         if (args[0].equalsIgnoreCase("create")) {
