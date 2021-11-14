@@ -4,7 +4,6 @@ import com.ags.simplenpcs.NPCManager;
 import com.ags.simplenpcs.SimpleNPCs;
 import com.ags.simplenpcs.objects.NPCEquipmentSlot;
 import com.ags.simplenpcs.objects.SNPC;
-import com.ags.simplenpcs.util.ItemUtils;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.profile.Profile;
 import org.bukkit.Bukkit;
@@ -13,7 +12,6 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
