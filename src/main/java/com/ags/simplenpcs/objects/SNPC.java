@@ -6,17 +6,17 @@ import java.util.HashMap;
 
 public class SNPC {
 
-    private HashMap<NPCEquipmentSlot, ItemStack> equipment;
+    private HashMap<NPCEquipmentSlot, String> equipment;
 
     public SNPC(){
         this.equipment = new HashMap<>();
     }
 
-    public void addEquipment(NPCEquipmentSlot slot, ItemStack itemStack){
+    public void addEquipment(NPCEquipmentSlot slot, String itemStack){
         equipment.put(slot, itemStack);
     }
 
-    public HashMap<NPCEquipmentSlot, ItemStack> getEquipment() {
+    public HashMap<NPCEquipmentSlot, String> getEquipment() {
         return equipment;
     }
 }

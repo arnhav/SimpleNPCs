@@ -3,7 +3,9 @@ package com.ags.simplenpcs.listeners;
 import com.ags.simplenpcs.NPCManager;
 import com.ags.simplenpcs.api.NPCLeftClickEvent;
 import com.ags.simplenpcs.api.NPCRightClickEvent;
+import com.ags.simplenpcs.objects.NPCEquipmentSlot;
 import com.ags.simplenpcs.objects.SNPC;
+import com.ags.simplenpcs.util.ItemUtils;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.event.PlayerNPCInteractEvent;
 import com.github.juliarn.npc.event.PlayerNPCShowEvent;
@@ -17,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 
 public class NPCListener implements Listener {
 
@@ -44,7 +47,6 @@ public class NPCListener implements Listener {
 
             EquipmentSlot es = EquipmentSlot.valueOf(hand==PlayerNPCInteractEvent.Hand.MAIN_HAND?"HAND":hand.toString());
             EntityEquipment ee = player.getEquipment();
-            if (ee == null) return;
             if (ee.getItem(es).getType() != Material.STICK) return;
             NPC selected = npcManager.getSelectedNPC().get(player);
             if (selected != null && selected.getEntityId()==npc.getEntityId()) return;
@@ -63,6 +65,12 @@ public class NPCListener implements Listener {
     public void onNPCShow(PlayerNPCShowEvent event){
         NPC npc = event.getNPC();
         event.send(npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true));
+        SNPC snpc = npcManager.getSnpcs().get(npcManager.getNpcs().get(npc));
+        for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()){
+            ItemStack is = ItemUtils.stringToItem(snpc.getEquipment().get(nes));
+            if (is == null) continue;
+            npc.equipment().queue(nes.getIndex(), is).send();
+        }
     }
 
 }

@@ -113,9 +113,7 @@ public class FileManager {
                 for (String ts : tcs.getKeys(false)) {
                     NPCEquipmentSlot nes = NPCEquipmentSlot.valueOf(ts);
                     String ti = tcs.getString(ts);
-                    ItemStack is = ItemUtils.stringToItem(ti);
-
-                    snpc.addEquipment(nes, is);
+                    snpc.addEquipment(nes, ti);
                 }
             }
 
@@ -134,11 +132,8 @@ public class FileManager {
 
             npc.setLookAtPlayer(look);
             npc.setImitatePlayer(imitate);
-
-            for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()) {
-                npc.equipment().queue(nes.getIndex(), snpc.getEquipment().get(nes)).send();
-            }
         }
+        plugin.getLogger().info("Loaded "+ npcManager.getNpcs().size() + " NPCs!");
     }
 
     public void loadCitizensFile() {
@@ -182,7 +177,7 @@ public class FileManager {
             saveNPC(id, npc, snpc, true);
         }
 
-        System.out.println("Loaded "+ npcManager.getNpcs().size() + " NPCs!");
+        plugin.getLogger().info("Loaded "+ npcManager.getNpcs().size() + " NPCs!");
     }
 
     public void saveNPC(int id, NPC npc, SNPC snpc, boolean update) {
@@ -195,8 +190,8 @@ public class FileManager {
             fc.set("npc." + id + ".properties." + p.getName() + ".signature", p.getSignature());
         }
         for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()) {
-            ItemStack is = snpc.getEquipment().get(nes);
-            fc.set("npc." + id + ".equipment." + nes.toString(), ItemUtils.itemToString(is));
+            String is = snpc.getEquipment().get(nes);
+            fc.set("npc." + id + ".equipment." + nes.toString(), is);
         }
         fc.set("npc." + id + ".loc.x", npc.getLocation().getX());
         fc.set("npc." + id + ".loc.y", npc.getLocation().getY());

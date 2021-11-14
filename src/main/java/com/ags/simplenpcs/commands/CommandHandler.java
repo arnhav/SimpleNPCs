@@ -5,6 +5,7 @@ import com.ags.simplenpcs.SimpleNPCs;
 import com.ags.simplenpcs.data.FileManager;
 import com.ags.simplenpcs.objects.NPCEquipmentSlot;
 import com.ags.simplenpcs.objects.SNPC;
+import com.ags.simplenpcs.util.ItemUtils;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.profile.Profile;
 import net.kyori.adventure.text.Component;
@@ -114,7 +115,7 @@ public class CommandHandler implements CommandExecutor {
             try {
                 ItemStack itemStack = ((Player) sender).getInventory().getItemInMainHand();
                 NPCEquipmentSlot nes = NPCEquipmentSlot.valueOf(args[1]);
-                snpc.addEquipment(nes, itemStack);
+                snpc.addEquipment(nes, ItemUtils.itemToString(itemStack));
 
                 selected.equipment().queue(nes.getIndex(), itemStack).send();
             } catch (Exception e) {
