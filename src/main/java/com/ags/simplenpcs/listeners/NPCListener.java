@@ -66,6 +66,7 @@ public class NPCListener implements Listener {
         NPC npc = event.getNPC();
         event.send(npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true));
         SNPC snpc = npcManager.getSnpcs().get(npcManager.getNpcs().get(npc));
+        if (snpc == null) return;
         for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()){
             ItemStack is = ItemUtils.stringToItem(snpc.getEquipment().get(nes));
             if (is == null) continue;
