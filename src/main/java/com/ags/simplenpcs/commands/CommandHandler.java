@@ -187,6 +187,19 @@ public class CommandHandler implements CommandExecutor {
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " toggled imitate."));
         }
 
+        if (args[0].equalsIgnoreCase("togglehide")) {
+            if (args.length != 1) return false;
+            NPC selected = npcManager.getSelectedNPC().get(sender);
+            if (selected == null) return false;
+            Integer id = npcManager.getNpcs().get(selected);
+            SNPC snpc = npcManager.getSnpcs().get(id);
+            if (snpc == null) return false;
+            if (selected.isShownFor((Player) sender)) selected.addExcludedPlayer((Player) sender);
+            else selected.removeExcludedPlayer((Player) sender);
+            fileManager.saveNPC(id, selected, snpc, false);
+            sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " toggled hide."));
+        }
+
         if (args[0].equalsIgnoreCase("tp")) {
             if (args.length != 1) return false;
             NPC selected = npcManager.getSelectedNPC().get(sender);
