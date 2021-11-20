@@ -69,7 +69,9 @@ public class NPCListener implements Listener {
         for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()){
             ItemStack is = ItemUtils.stringToItem(snpc.getEquipment().get(nes));
             if (is == null) continue;
-            npc.equipment().queue(nes.getIndex(), is).send();
+            try {
+                npc.equipment().queue(nes.getIndex(), is).send();
+            } catch (Exception ignored){}
         }
     }
 
