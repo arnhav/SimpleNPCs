@@ -79,6 +79,7 @@ public class NPCManager {
                 .build(npcPool);
         npcs.put(npc, id);
         snpcs.put(id, snpc);
+        if (id > lastNPCID) lastNPCID = id;
         return npc;
     }
 
