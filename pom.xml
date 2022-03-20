@@ -12,7 +12,7 @@
     <name>SimpleNPCs</name>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -53,6 +53,7 @@
     </build>
 
     <repositories>
+        <!--Paper-->
         <repository>
             <id>papermc-repo</id>
             <url>https://papermc.io/repo/repository/maven-public/</url>
@@ -61,33 +62,38 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
+        <!--ProtocolLib-->
         <repository>
             <id>dmulloy2-repo</id>
             <url>https://repo.dmulloy2.net/repository/public/</url>
         </repository>
+        <!--NPC-Lib-->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
+        <!--Paper-->
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.17.1-R0.1-SNAPSHOT</version>
+            <version>1.18.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.github.juliarn</groupId>
-            <artifactId>NPC-Lib</artifactId>
-            <version>development-SNAPSHOT</version>
-        </dependency>
+        <!--ProtocolLib-->
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>4.7.0</version>
             <scope>provided</scope>
+        </dependency>
+        <!--NPC-Lib-->
+        <dependency>
+            <groupId>com.github.juliarn</groupId>
+            <artifactId>npc-lib</artifactId>
+            <version>2.6-RELEASE</version>
         </dependency>
     </dependencies>
 </project>

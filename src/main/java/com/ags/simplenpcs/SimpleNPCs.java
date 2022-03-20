@@ -5,12 +5,12 @@ import com.ags.simplenpcs.commands.CommandHandler;
 import com.ags.simplenpcs.data.FileManager;
 import com.ags.simplenpcs.listeners.NPCListener;
 import com.ags.simplenpcs.objects.SNPC;
-import com.github.juliarn.npc.NPC;
-import com.github.juliarn.npc.profile.Profile;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import com.github.juliarn.npc.NPC;
+import com.github.juliarn.npc.profile.Profile;
 
 public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
 
