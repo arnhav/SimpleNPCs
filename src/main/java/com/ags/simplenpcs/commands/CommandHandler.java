@@ -26,7 +26,7 @@ public class CommandHandler implements CommandExecutor {
     private NPCManager npcManager;
     private FileManager fileManager;
 
-    public CommandHandler(NPCManager npcManager, FileManager fileManager){
+    public CommandHandler(NPCManager npcManager, FileManager fileManager) {
         this.npcManager = npcManager;
         this.fileManager = fileManager;
     }
@@ -59,7 +59,7 @@ public class CommandHandler implements CommandExecutor {
             );
         }
 
-        if (args[0].equalsIgnoreCase("reload")){
+        if (args[0].equalsIgnoreCase("reload")) {
             npcManager.removeNPCs(true);
             fileManager = new FileManager(SimpleNPCs.instance(), npcManager);
         }
@@ -67,9 +67,9 @@ public class CommandHandler implements CommandExecutor {
         if (args[0].equalsIgnoreCase("create")) {
             if (args.length < 3) return false;
             StringBuilder npcName = new StringBuilder();
-            for (int i = 2; i < args.length; i++){
+            for (int i = 2; i < args.length; i++) {
                 npcName.append(args[i]);
-                if (i != args.length-1) npcName.append(" ");
+                if (i != args.length - 1) npcName.append(" ");
             }
             Profile profile = npcManager.createProfile(args[1], npcName.toString());
             NPC npc = npcManager.addNPC(((Player) sender).getLocation(), profile);
@@ -214,7 +214,7 @@ public class CommandHandler implements CommandExecutor {
             NPC npc = npcManager.getNpcs().inverse().get(id);
             if (selected != null && selected.getEntityId() == npc.getEntityId()) return false;
             npcManager.getSelectedNPC().put((Player) sender, npc);
-            sender.sendMessage(Component.text(ChatColor.YELLOW+"You have selected NPC: "+id));
+            sender.sendMessage(Component.text(ChatColor.YELLOW + "You have selected NPC: " + id));
         }
 
         if (args[0].equalsIgnoreCase("info")) {
@@ -241,13 +241,13 @@ public class CommandHandler implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("rmall")) {
-            for (int i : npcManager.getNpcs().values()){
+            for (int i : npcManager.getNpcs().values()) {
                 fileManager.removeNPC(i);
             }
             npcManager.removeNPCs(true);
         }
 
-        if (args[0].equalsIgnoreCase("rmtmp")){
+        if (args[0].equalsIgnoreCase("rmtmp")) {
             npcManager.removeNPCs(false);
         }
 

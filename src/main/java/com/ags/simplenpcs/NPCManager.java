@@ -38,15 +38,15 @@ public class NPCManager {
         return lastNPCID;
     }
 
-    public NPC addNPC(Location location, Profile profile){
-        NPC npc= NPC.builder()
-            .profile(profile)
-            .location(location)
-            .imitatePlayer(false)
-            .lookAtPlayer(false)
-            .build(npcPool);
+    public NPC addNPC(Location location, Profile profile) {
+        NPC npc = NPC.builder()
+                .profile(profile)
+                .location(location)
+                .imitatePlayer(false)
+                .lookAtPlayer(false)
+                .build(npcPool);
         SNPC snpc = new SNPC();
-        lastNPCID+=1;
+        lastNPCID += 1;
         int id = lastNPCID;
         npcs.put(npc, id);
         snpcs.put(id, snpc);
@@ -54,15 +54,15 @@ public class NPCManager {
     }
 
     // Used by the API
-    public NPC spawnNPC(Location location, Profile profile){
-        NPC npc= NPC.builder()
+    public NPC spawnNPC(Location location, Profile profile) {
+        NPC npc = NPC.builder()
                 .profile(profile)
                 .location(location)
                 .imitatePlayer(false)
                 .lookAtPlayer(false)
                 .build(npcPool);
         SNPC snpc = new SNPC();
-        lastNPCID+=1;
+        lastNPCID += 1;
         int id = lastNPCID;
         npcs.put(npc, id);
         snpcs.put(id, snpc);
@@ -70,8 +70,8 @@ public class NPCManager {
     }
 
     // Used by internal stuff like commands and loading from the file
-    public NPC spawnNPC(Location location, Profile profile, int id, SNPC snpc){
-        NPC npc= NPC.builder()
+    public NPC spawnNPC(Location location, Profile profile, int id, SNPC snpc) {
+        NPC npc = NPC.builder()
                 .profile(profile)
                 .location(location)
                 .imitatePlayer(false)
@@ -83,7 +83,7 @@ public class NPCManager {
         return npc;
     }
 
-    public void removeNPC(NPC npc, boolean full){
+    public void removeNPC(NPC npc, boolean full) {
         Integer id = npcs.get(npc);
         npcPool.removeNPC(npc.getEntityId());
         if (!full) return;
@@ -91,19 +91,19 @@ public class NPCManager {
         snpcs.remove(id);
     }
 
-    public void removeNPCs(boolean full){
+    public void removeNPCs(boolean full) {
         npcPool.getNPCs().forEach(npc -> removeNPC(npc, full));
     }
 
-    public void hideNPCForPlayer(NPC npc, Player player){
+    public void hideNPCForPlayer(NPC npc, Player player) {
         npc.addExcludedPlayer(player);
     }
 
-    public void showNPCForPlayer(NPC npc, Player player){
+    public void showNPCForPlayer(NPC npc, Player player) {
         npc.removeExcludedPlayer(player);
     }
 
-    public Profile createProfile(String playerName, String customName){
+    public Profile createProfile(String playerName, String customName) {
         Random random = new Random();
         Profile profile = new Profile(playerName);
         profile.complete();
@@ -112,7 +112,7 @@ public class NPCManager {
         return profile;
     }
 
-    public Profile createProfile(String playerName, List<Profile.Property> list){
+    public Profile createProfile(String playerName, List<Profile.Property> list) {
         Random random = new Random();
         Profile profile = new Profile(playerName, list);
         profile.complete(false);

@@ -1,7 +1,6 @@
 package com.ags.simplenpcs.api;
 
 import com.github.juliarn.npc.NPC;
-import com.github.juliarn.npc.event.PlayerNPCEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +25,7 @@ public class NPCRightClickEvent extends NPCClickEvent {
         return HANDLERS;
     }
 
-    public static HandlerList getHandlerList(){
+    public static HandlerList getHandlerList() {
         return HANDLERS;
     }
 

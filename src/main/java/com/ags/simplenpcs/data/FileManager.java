@@ -134,7 +134,7 @@ public class FileManager {
                 plugin.getLogger().severe("Error with NPC " + id);
             }
         }
-        plugin.getLogger().info("Loaded "+ npcManager.getNpcs().size() + " NPCs!");
+        plugin.getLogger().info("Loaded " + npcManager.getNpcs().size() + " NPCs!");
     }
 
     public void loadCitizensFile() {
@@ -151,12 +151,12 @@ public class FileManager {
 
             String name = cs.getString(p + ".name");
 
-            double x = Double.parseDouble(cs.getString(p+".traits.location.x"));
-            double y = Double.parseDouble(cs.getString(p+".traits.location.y"));
-            double z = Double.parseDouble(cs.getString(p+".traits.location.z"));
-            float yaw = Float.parseFloat(cs.getString(p+".traits.location.yaw"));
-            float pitch = Float.parseFloat(cs.getString(p+".traits.location.pitch"));
-            String worldName = cs.getString(p+".traits.location.world");
+            double x = Double.parseDouble(cs.getString(p + ".traits.location.x"));
+            double y = Double.parseDouble(cs.getString(p + ".traits.location.y"));
+            double z = Double.parseDouble(cs.getString(p + ".traits.location.z"));
+            float yaw = Float.parseFloat(cs.getString(p + ".traits.location.yaw"));
+            float pitch = Float.parseFloat(cs.getString(p + ".traits.location.pitch"));
+            String worldName = cs.getString(p + ".traits.location.world");
             if (worldName == null) continue;
             World world = Bukkit.getWorld(worldName);
             if (world == null) continue;
@@ -178,7 +178,7 @@ public class FileManager {
             saveNPC(id, npc, snpc, true);
         }
 
-        plugin.getLogger().info("Loaded "+ npcManager.getNpcs().size() + " NPCs!");
+        plugin.getLogger().info("Loaded " + npcManager.getNpcs().size() + " NPCs!");
     }
 
     public void saveNPC(int id, NPC npc, SNPC snpc, boolean update) {

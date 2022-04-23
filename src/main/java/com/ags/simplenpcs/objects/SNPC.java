@@ -1,18 +1,16 @@
 package com.ags.simplenpcs.objects;
 
-import org.bukkit.inventory.ItemStack;
-
 import java.util.HashMap;
 
 public class SNPC {
 
     private HashMap<NPCEquipmentSlot, String> equipment;
 
-    public SNPC(){
+    public SNPC() {
         this.equipment = new HashMap<>();
     }
 
-    public void addEquipment(NPCEquipmentSlot slot, String itemStack){
+    public void addEquipment(NPCEquipmentSlot slot, String itemStack) {
         equipment.put(slot, itemStack);
     }
 

@@ -8,10 +8,10 @@ public enum NPCEquipmentSlot {
     LEGS(3),
     CHEST(4),
     HEAD(5);
-    
+
     int index;
-    
-    NPCEquipmentSlot(int index){
+
+    NPCEquipmentSlot(int index) {
         this.index = index;
     }
 

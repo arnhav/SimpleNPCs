@@ -20,7 +20,7 @@ public class NPCClickEvent extends PlayerNPCEvent {
         return HANDLERS;
     }
 
-    public static HandlerList getHandlerList(){
+    public static HandlerList getHandlerList() {
         return HANDLERS;
     }
 

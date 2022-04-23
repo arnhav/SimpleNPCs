@@ -25,12 +25,12 @@ public class NPCListener implements Listener {
 
     private NPCManager npcManager;
 
-    public NPCListener(NPCManager npcManager){
+    public NPCListener(NPCManager npcManager) {
         this.npcManager = npcManager;
     }
 
     @EventHandler
-    public void onNPCInteract(PlayerNPCInteractEvent event){
+    public void onNPCInteract(PlayerNPCInteractEvent event) {
         Player player = event.getPlayer();
         NPC npc = event.getNPC();
         Integer id = npcManager.getNpcs().get(npc);
@@ -40,21 +40,21 @@ public class NPCListener implements Listener {
 
         if (snpc == null) return;
 
-        if (action == PlayerNPCInteractEvent.EntityUseAction.ATTACK){
-            NPCLeftClickEvent nlce = new NPCLeftClickEvent(player,npc);
+        if (action == PlayerNPCInteractEvent.EntityUseAction.ATTACK) {
+            NPCLeftClickEvent nlce = new NPCLeftClickEvent(player, npc);
             if (nlce.isCancelled()) return;
             Bukkit.getPluginManager().callEvent(nlce);
 
-            EquipmentSlot es = EquipmentSlot.valueOf(hand==PlayerNPCInteractEvent.Hand.MAIN_HAND?"HAND":hand.toString());
+            EquipmentSlot es = EquipmentSlot.valueOf(hand == PlayerNPCInteractEvent.Hand.MAIN_HAND ? "HAND" : hand.toString());
             EntityEquipment ee = player.getEquipment();
             if (ee.getItem(es).getType() != Material.STICK) return;
             NPC selected = npcManager.getSelectedNPC().get(player);
-            if (selected != null && selected.getEntityId()==npc.getEntityId()) return;
+            if (selected != null && selected.getEntityId() == npc.getEntityId()) return;
             npcManager.getSelectedNPC().put(player, npc);
-            player.sendMessage(Component.text(ChatColor.YELLOW+"You have selected NPC: "+id));
+            player.sendMessage(Component.text(ChatColor.YELLOW + "You have selected NPC: " + id));
         }
 
-        if (action == PlayerNPCInteractEvent.EntityUseAction.INTERACT_AT){
+        if (action == PlayerNPCInteractEvent.EntityUseAction.INTERACT_AT) {
             NPCRightClickEvent nrce = new NPCRightClickEvent(player, npc);
             if (nrce.isCancelled()) return;
             Bukkit.getPluginManager().callEvent(nrce);
@@ -62,17 +62,18 @@ public class NPCListener implements Listener {
     }
 
     @EventHandler
-    public void onNPCShow(PlayerNPCShowEvent event){
+    public void onNPCShow(PlayerNPCShowEvent event) {
         NPC npc = event.getNPC();
         event.send(npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true));
         SNPC snpc = npcManager.getSnpcs().get(npcManager.getNpcs().get(npc));
         if (snpc == null) return;
-        for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()){
+        for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()) {
             ItemStack is = ItemUtils.stringToItem(snpc.getEquipment().get(nes));
             if (is == null) continue;
             try {
                 npc.equipment().queue(nes.getIndex(), is).send();
-            } catch (Exception ignored){}
+            } catch (Exception ignored) {
+            }
         }
     }
 
