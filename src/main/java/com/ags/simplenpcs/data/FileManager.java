@@ -88,48 +88,51 @@ public class FileManager {
         for (String p : cs.getKeys(false)) {
             int id = Integer.parseInt(p);
             SNPC snpc = new SNPC();
+            try {
+                String name = cs.getString(p + ".name");
+                boolean look = cs.getBoolean(p + ".look");
+                boolean imitate = cs.getBoolean(p + ".imitate");
 
-            String name = cs.getString(p + ".name");
-            boolean look = cs.getBoolean(p + ".look");
-            boolean imitate = cs.getBoolean(p + ".imitate");
-
-            ConfigurationSection tcs = cs.getConfigurationSection(p + ".properties");
-            if (tcs == null) continue;
-            List<Profile.Property> properties = new ArrayList<>();
-            for (String ts : tcs.getKeys(false)) {
-                String value = tcs.getString(ts + ".value");
-                String signature = tcs.getString(ts + ".signature");
-                if (value == null || signature == null) continue;
-                Profile.Property property = new Profile.Property(ts, value, signature);
-                properties.add(property);
-            }
-
-            Profile profile = npcManager.createProfile(name == null ? "NPC" : name, properties);
-
-            tcs = cs.getConfigurationSection(p + ".equipment");
-            if (tcs != null) {
+                ConfigurationSection tcs = cs.getConfigurationSection(p + ".properties");
+                if (tcs == null) continue;
+                List<Profile.Property> properties = new ArrayList<>();
                 for (String ts : tcs.getKeys(false)) {
-                    NPCEquipmentSlot nes = NPCEquipmentSlot.valueOf(ts);
-                    String ti = tcs.getString(ts);
-                    snpc.addEquipment(nes, ti);
+                    String value = tcs.getString(ts + ".value");
+                    String signature = tcs.getString(ts + ".signature");
+                    if (value == null || signature == null) continue;
+                    Profile.Property property = new Profile.Property(ts, value, signature);
+                    properties.add(property);
                 }
+
+                Profile profile = npcManager.createProfile(name == null ? "NPC" : name, properties);
+
+                tcs = cs.getConfigurationSection(p + ".equipment");
+                if (tcs != null) {
+                    for (String ts : tcs.getKeys(false)) {
+                        NPCEquipmentSlot nes = NPCEquipmentSlot.valueOf(ts);
+                        String ti = tcs.getString(ts);
+                        snpc.addEquipment(nes, ti);
+                    }
+                }
+
+                double x = cs.getDouble(p + ".loc.x");
+                double y = cs.getDouble(p + ".loc.y");
+                double z = cs.getDouble(p + ".loc.z");
+                float yaw = (float) cs.getDouble(p + ".loc.u");
+                float pitch = (float) cs.getDouble(p + ".loc.p");
+                String worldName = cs.getString(p + ".loc.w");
+                if (worldName == null) continue;
+                World world = Bukkit.getWorld(worldName);
+                if (world == null) continue;
+                Location location = new Location(world, x, y, z, yaw, pitch);
+
+                NPC npc = npcManager.spawnNPC(location, profile, id, snpc);
+
+                npc.setLookAtPlayer(look);
+                npc.setImitatePlayer(imitate);
+            } catch (Exception e) {
+                plugin.getLogger().severe("Error with NPC " + id);
             }
-
-            double x = cs.getDouble(p + ".loc.x");
-            double y = cs.getDouble(p + ".loc.y");
-            double z = cs.getDouble(p + ".loc.z");
-            float yaw = (float) cs.getDouble(p + ".loc.u");
-            float pitch = (float) cs.getDouble(p + ".loc.p");
-            String worldName = cs.getString(p + ".loc.w");
-            if (worldName == null) continue;
-            World world = Bukkit.getWorld(worldName);
-            if (world == null) continue;
-            Location location = new Location(world, x, y, z, yaw, pitch);
-
-            NPC npc = npcManager.spawnNPC(location, profile, id, snpc);
-
-            npc.setLookAtPlayer(look);
-            npc.setImitatePlayer(imitate);
         }
         plugin.getLogger().info("Loaded "+ npcManager.getNpcs().size() + " NPCs!");
     }
