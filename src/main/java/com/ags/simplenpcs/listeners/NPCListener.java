@@ -64,7 +64,8 @@ public class NPCListener implements Listener {
     @EventHandler
     public void onNPCShow(PlayerNPCShowEvent event) {
         NPC npc = event.getNPC();
-        event.send(npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true));
+        npc.metadata().queue(MetadataModifier.EntityMetadata.SKIN_LAYERS, true).send();
+        npc.rotation().queueRotate(npc.getLocation().getYaw(), npc.getLocation().getPitch()).send();
         SNPC snpc = npcManager.getSnpcs().get(npcManager.getNpcs().get(npc));
         if (snpc == null) return;
         for (NPCEquipmentSlot nes : snpc.getEquipment().keySet()) {
