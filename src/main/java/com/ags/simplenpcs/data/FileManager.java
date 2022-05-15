@@ -127,7 +127,7 @@ public class FileManager {
                 Location location = new Location(world, x, y, z, yaw, pitch);
 
                 NPC npc = npcManager.spawnNPC(location, profile, id, snpc);
-
+                npc.rotation().queueRotate(yaw, pitch);
                 npc.setLookAtPlayer(look);
                 npc.setImitatePlayer(imitate);
             } catch (Exception e) {

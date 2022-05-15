@@ -147,10 +147,7 @@ public class CommandHandler implements CommandExecutor {
             Integer id = npcManager.getNpcs().get(selected);
             SNPC snpc = npcManager.getSnpcs().get(id);
             if (snpc == null) return false;
-            Location loc = selected.getLocation().clone();
-            float yaw = (float) Math.toDegrees(Math.atan2(((Player) sender).getLocation().getZ() - loc.getZ(), ((Player) sender).getLocation().getX() - loc.getX())) - 90;
-            loc.setYaw(yaw);
-            selected.teleport().queueTeleport(loc);
+            selected.rotation().queueLookAt(((Player) sender).getLocation());
             fileManager.saveNPC(id, selected, snpc, true);
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " made to look at you."));
         }
