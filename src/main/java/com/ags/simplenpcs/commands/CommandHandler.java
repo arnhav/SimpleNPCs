@@ -135,7 +135,7 @@ public class CommandHandler implements CommandExecutor {
             SNPC snpc = npcManager.getSnpcs().get(id);
             if (snpc == null) return false;
             npcManager.removeNPC(selected, true);
-            selected.teleport().queueTeleport(((Player) sender).getLocation());
+            selected.teleport().queueTeleport(((Player) sender).getLocation()).send();
             fileManager.saveNPC(id, selected, snpc, true);
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " changed location."));
         }
@@ -147,7 +147,7 @@ public class CommandHandler implements CommandExecutor {
             Integer id = npcManager.getNpcs().get(selected);
             SNPC snpc = npcManager.getSnpcs().get(id);
             if (snpc == null) return false;
-            selected.rotation().queueLookAt(((Player) sender).getLocation());
+            selected.rotation().queueLookAt(((Player) sender).getLocation()).send();
             fileManager.saveNPC(id, selected, snpc, true);
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " made to look at you."));
         }
