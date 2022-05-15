@@ -135,15 +135,11 @@ public class CommandHandler implements CommandExecutor {
             SNPC snpc = npcManager.getSnpcs().get(id);
             if (snpc == null) return false;
             npcManager.removeNPC(selected, true);
-            NPC npc = npcManager.spawnNPC(((Player) sender).getLocation(), selected.getProfile(), id, snpc);
-            npc.setLookAtPlayer(selected.isLookAtPlayer());
-            npc.setImitatePlayer(selected.isImitatePlayer());
-            fileManager.saveNPC(id, npc, snpc, true);
-            npcManager.getSelectedNPC().put((Player) sender, npc);
+            selected.teleport().queueTeleport(((Player) sender).getLocation());
+            fileManager.saveNPC(id, selected, snpc, true);
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " changed location."));
         }
 
-        // TODO: Make this work
         if (args[0].equalsIgnoreCase("setlook")) {
             if (args.length != 1) return false;
             NPC selected = npcManager.getSelectedNPC().get(sender);
@@ -151,15 +147,11 @@ public class CommandHandler implements CommandExecutor {
             Integer id = npcManager.getNpcs().get(selected);
             SNPC snpc = npcManager.getSnpcs().get(id);
             if (snpc == null) return false;
-            Location loc = selected.getLocation();
+            Location loc = selected.getLocation().clone();
             float yaw = (float) Math.toDegrees(Math.atan2(((Player) sender).getLocation().getZ() - loc.getZ(), ((Player) sender).getLocation().getX() - loc.getX())) - 90;
             loc.setYaw(yaw);
-            npcManager.removeNPC(selected, true);
-            NPC npc = npcManager.spawnNPC(loc, selected.getProfile(), id, snpc);
-            npc.setLookAtPlayer(selected.isLookAtPlayer());
-            npc.setImitatePlayer(selected.isImitatePlayer());
-            fileManager.saveNPC(id, npc, snpc, true);
-            npcManager.getSelectedNPC().put((Player) sender, npc);
+            selected.teleport().queueTeleport(loc);
+            fileManager.saveNPC(id, selected, snpc, true);
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " made to look at you."));
         }
 
