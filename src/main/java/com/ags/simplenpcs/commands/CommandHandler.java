@@ -148,7 +148,7 @@ public class CommandHandler implements CommandExecutor {
             SNPC snpc = npcManager.getSnpcs().get(id);
             if (snpc == null) return false;
             selected.rotation().queueLookAt(((Player) sender).getLocation()).send();
-            fileManager.saveNPC(id, selected, snpc, true);
+            fileManager.saveNPCRotation(id, selected, ((Player) sender).getLocation());
             sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " made to look at you."));
         }
 

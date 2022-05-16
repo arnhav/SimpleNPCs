@@ -206,6 +206,20 @@ public class FileManager {
         npcManager.getSnpcs().put(id, snpc);
     }
 
+    public void saveNPCRotation(int id, NPC npc, Location location) {
+        double xDifference = location.getX() - npc.getLocation().getX();
+        double yDifference = location.getY() - npc.getLocation().getY();
+        double zDifference = location.getZ() - npc.getLocation().getZ();
+        double r = Math.sqrt(Math.pow(xDifference, 2.0D) + Math.pow(yDifference, 2.0D) + Math.pow(zDifference, 2.0D));
+        float yaw = (float)(-Math.atan2(xDifference, zDifference) / 3.141592653589793D * 180.0D);
+        yaw = yaw < 0.0F ? yaw + 360.0F : yaw;
+        float pitch = (float)(-Math.asin(yDifference / r) / 3.141592653589793D * 180.0D);
+        FileConfiguration fc = YamlConfiguration.loadConfiguration(npcFile);
+        fc.set("npc." + id + ".loc.u", yaw);
+        fc.set("npc." + id + ".loc.p", pitch);
+        saveFile(fc, npcFile);
+    }
+
     public void removeNPC(int id) {
         FileConfiguration fc = YamlConfiguration.loadConfiguration(npcFile);
         fc.set("npc." + id, null);
