@@ -5,7 +5,7 @@ The system uses this library: https://github.com/juliarn/NPC-Lib
 
 Requires ProtocolLib as a dependency.
 
-[![](https://jitpack.io/v/arnhav11/SimpleNPCs.svg)](https://jitpack.io/#arnhav11/SimpleNPCs)
+[![](https://jitpack.io/v/arnhav/SimpleNPCs.svg)](https://jitpack.io/#arnhav/SimpleNPCs)
 
 ## Maven
 ```
@@ -15,7 +15,7 @@ Requires ProtocolLib as a dependency.
 </repository>
 
 <dependency>
-    <groupId>com.github.arnhav11</groupId>
+    <groupId>com.github.arnhav</groupId>
     <artifactId>SimpleNPCs</artifactId>
     <version>main-SNAPSHOT</version>
 </dependency>
