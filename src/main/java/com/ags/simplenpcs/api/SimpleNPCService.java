@@ -8,18 +8,20 @@ import org.bukkit.entity.Player;
 
 public interface SimpleNPCService {
 
-    public NPC getNPC(int id);
+    boolean isFinishedLoading();
 
-    public int getID(NPC npc);
+    NPC getNPC(int id);
 
-    public SNPC getSNPC(int id);
+    int getID(NPC npc);
 
-    public NPC createNPC(Profile p, Location l);
+    SNPC getSNPC(int id);
 
-    public void deleteNPC(NPC n);
+    NPC createNPC(Profile p, Location l);
 
-    public void hideNPCFromPlayer(NPC n, Player p);
+    void deleteNPC(NPC n);
 
-    public void showNPCToPlayer(NPC n, Player p);
+    void hideNPCFromPlayer(NPC n, Player p);
+
+    void showNPCToPlayer(NPC n, Player p);
 
 }

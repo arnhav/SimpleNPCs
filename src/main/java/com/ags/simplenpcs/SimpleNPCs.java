@@ -41,6 +41,11 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
     }
 
     @Override
+    public boolean isFinishedLoading() {
+        return fileManager.isFinishedLoading();
+    }
+
+    @Override
     public NPC getNPC(int id) {
         return npcManager.getNpcs().inverse().get(id);
     }

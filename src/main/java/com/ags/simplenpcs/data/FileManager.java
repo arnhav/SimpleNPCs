@@ -26,6 +26,8 @@ public class FileManager {
 
     private File npcFile;
 
+    private boolean finishedLoading = false;
+
     public FileManager(JavaPlugin plugin, NPCManager npcManager) {
         this.plugin = plugin;
         this.npcManager = npcManager;
@@ -134,6 +136,7 @@ public class FileManager {
             }
         }
         plugin.getLogger().info("Loaded " + npcManager.getNpcs().size() + " NPCs!");
+        finishedLoading = true;
     }
 
     public void loadCitizensFile() {
@@ -232,5 +235,9 @@ public class FileManager {
         } catch (Exception e) {
 
         }
+    }
+
+    public boolean isFinishedLoading() {
+        return finishedLoading;
     }
 }
