@@ -12,7 +12,6 @@ public class NPCUtil {
         Integer id = SimpleNPCs.npcManager().getNpcs().get(selected);
         SNPC snpc = SimpleNPCs.npcManager().getSnpcs().get(id);
         if (snpc == null) return;
-        SimpleNPCs.npcManager().removeNPC(selected, true);
         selected.teleport().queueTeleport(location).send();
         SimpleNPCs.fileManager().saveNPC(id, selected, snpc, true);
     }
