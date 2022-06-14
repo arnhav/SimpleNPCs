@@ -5,6 +5,7 @@ import com.ags.simplenpcs.commands.CommandHandler;
 import com.ags.simplenpcs.data.FileManager;
 import com.ags.simplenpcs.listeners.NPCListener;
 import com.ags.simplenpcs.objects.SNPC;
+import com.ags.simplenpcs.util.NPCUtil;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.profile.Profile;
 import org.bukkit.Location;
@@ -38,6 +39,14 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
 
     public static SimpleNPCs instance() {
         return SimpleNPCs.getPlugin(SimpleNPCs.class);
+    }
+
+    public static NPCManager npcManager() {
+        return instance().npcManager;
+    }
+
+    public static FileManager fileManager() {
+        return instance().fileManager;
     }
 
     @Override
@@ -84,5 +93,25 @@ public final class SimpleNPCs extends JavaPlugin implements SimpleNPCService {
     @Override
     public void showNPCToPlayer(NPC n, Player p) {
         npcManager.showNPCForPlayer(n, p);
+    }
+
+    @Override
+    public void teleportToLocation(NPC n, Location l) {
+        NPCUtil.teleportToLocation(n, l);
+    }
+
+    @Override
+    public void setLook(NPC n, Location l) {
+        NPCUtil.setLook(n, l);
+    }
+
+    @Override
+    public void toggleLook(NPC n) {
+        NPCUtil.toggleLook(n);
+    }
+
+    @Override
+    public void toggleImitate(NPC n) {
+        NPCUtil.toggleImitate(n);
     }
 }

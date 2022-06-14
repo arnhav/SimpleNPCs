@@ -6,6 +6,7 @@ import com.ags.simplenpcs.data.FileManager;
 import com.ags.simplenpcs.objects.NPCEquipmentSlot;
 import com.ags.simplenpcs.objects.SNPC;
 import com.ags.simplenpcs.util.ItemUtils;
+import com.ags.simplenpcs.util.NPCUtil;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.profile.Profile;
 import net.kyori.adventure.text.Component;
@@ -130,50 +131,29 @@ public class CommandHandler implements CommandExecutor {
         if (args[0].equalsIgnoreCase("tphere")) {
             if (args.length != 1) return false;
             NPC selected = npcManager.getSelectedNPC().get(sender);
-            if (selected == null) return false;
-            Integer id = npcManager.getNpcs().get(selected);
-            SNPC snpc = npcManager.getSnpcs().get(id);
-            if (snpc == null) return false;
-            npcManager.removeNPC(selected, true);
-            selected.teleport().queueTeleport(((Player) sender).getLocation()).send();
-            fileManager.saveNPC(id, selected, snpc, true);
-            sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " changed location."));
+            NPCUtil.teleportToLocation(selected, ((Player) sender).getLocation());
+            sender.sendMessage(Component.text(ChatColor.GRAY + "NPC changed location."));
         }
 
         if (args[0].equalsIgnoreCase("setlook")) {
             if (args.length != 1) return false;
             NPC selected = npcManager.getSelectedNPC().get(sender);
-            if (selected == null) return false;
-            Integer id = npcManager.getNpcs().get(selected);
-            SNPC snpc = npcManager.getSnpcs().get(id);
-            if (snpc == null) return false;
-            selected.rotation().queueLookAt(((Player) sender).getLocation()).send();
-            fileManager.saveNPCRotation(id, selected, ((Player) sender).getLocation());
-            sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " made to look at you."));
+            NPCUtil.setLook(selected, ((Player) sender).getLocation());
+            sender.sendMessage(Component.text(ChatColor.GRAY + "Made the NPC look at you."));
         }
 
         if (args[0].equalsIgnoreCase("look")) {
             if (args.length != 1) return false;
             NPC selected = npcManager.getSelectedNPC().get(sender);
-            if (selected == null) return false;
-            Integer id = npcManager.getNpcs().get(selected);
-            SNPC snpc = npcManager.getSnpcs().get(id);
-            if (snpc == null) return false;
-            selected.setLookAtPlayer(!selected.isLookAtPlayer());
-            fileManager.saveNPC(id, selected, snpc, false);
-            sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " toggled look."));
+            NPCUtil.toggleLook(selected);
+            sender.sendMessage(Component.text(ChatColor.GRAY + "Toggled look."));
         }
 
         if (args[0].equalsIgnoreCase("imitate")) {
             if (args.length != 1) return false;
             NPC selected = npcManager.getSelectedNPC().get(sender);
-            if (selected == null) return false;
-            Integer id = npcManager.getNpcs().get(selected);
-            SNPC snpc = npcManager.getSnpcs().get(id);
-            if (snpc == null) return false;
-            selected.setImitatePlayer(!selected.isImitatePlayer());
-            fileManager.saveNPC(id, selected, snpc, false);
-            sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " toggled imitate."));
+            NPCUtil.toggleImitate(selected);
+            sender.sendMessage(Component.text(ChatColor.GRAY + "Toggled imitate."));
         }
 
         if (args[0].equalsIgnoreCase("togglehide")) {
@@ -216,13 +196,6 @@ public class CommandHandler implements CommandExecutor {
             sender.sendMessage(Component.text(ChatColor.DARK_AQUA + "--NPC Info--"));
             sender.sendMessage(Component.text(ChatColor.DARK_AQUA + "ID: " + id));
             sender.sendMessage(Component.text(ChatColor.DARK_AQUA + "Internal ID: " + selected.getEntityId()));
-            if (!(sender.getName().equals("Tyrriel") || sender.getName().equals("arnhav"))) return true;
-            sender.sendMessage(Component.text(ChatColor.DARK_AQUA + "Properties:"));
-            for (Profile.Property pr : selected.getProfile().getProperties()) {
-                sender.sendMessage(Component.text(ChatColor.DARK_AQUA + " Name: " + pr.getName()));
-                sender.sendMessage(Component.text(ChatColor.DARK_AQUA + " Value: " + pr.getValue()));
-                sender.sendMessage(Component.text(ChatColor.DARK_AQUA + " Signature: " + pr.getSignature()));
-            }
         }
 
         if (args[0].equalsIgnoreCase("equipmentslots")) {

@@ -24,4 +24,11 @@ public interface SimpleNPCService {
 
     void showNPCToPlayer(NPC n, Player p);
 
+    void teleportToLocation(NPC n, Location l);
+
+    void setLook(NPC n, Location l);
+
+    void toggleLook(NPC n);
+
+    void toggleImitate(NPC n);
 }
