@@ -9,10 +9,8 @@ import com.ags.simplenpcs.util.ItemUtils;
 import com.ags.simplenpcs.util.NPCUtil;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.profile.Profile;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -77,7 +75,7 @@ public class CommandHandler implements CommandExecutor {
             int id = npcManager.getNpcs().get(npc);
             SNPC snpc = npcManager.getSnpcs().get(id);
             fileManager.saveNPC(id, npc, snpc, true);
-            sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + args[2] + " created!"));
+            sender.sendMessage(ChatColor.GRAY + "NPC: " + args[2] + " created!");
         }
 
         if (args[0].equalsIgnoreCase("delete")) {
@@ -87,7 +85,7 @@ public class CommandHandler implements CommandExecutor {
             Integer id = npcManager.getNpcs().get(selected);
             npcManager.removeNPC(selected, true);
             fileManager.removeNPC(id);
-            sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " deleted."));
+            sender.sendMessage(ChatColor.GRAY + "NPC: " + id + " deleted.");
         }
 
         if (args[0].equalsIgnoreCase("setskin")) {
@@ -105,7 +103,7 @@ public class CommandHandler implements CommandExecutor {
             npc.setImitatePlayer(selected.isImitatePlayer());
             fileManager.saveNPC(id, npc, snpc, true);
             npcManager.getSelectedNPC().put((Player) sender, npc);
-            sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " skin changed."));
+            sender.sendMessage(ChatColor.GRAY + "NPC: " + id + " skin changed.");
         }
 
         if (args[0].equalsIgnoreCase("setequipment")) {
@@ -125,35 +123,35 @@ public class CommandHandler implements CommandExecutor {
                 return false;
             }
             fileManager.saveNPC(id, selected, snpc, false);
-            sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " equipment changed."));
+            sender.sendMessage(ChatColor.GRAY + "NPC: " + id + " equipment changed.");
         }
 
         if (args[0].equalsIgnoreCase("tphere")) {
             if (args.length != 1) return false;
             NPC selected = npcManager.getSelectedNPC().get(sender);
             NPCUtil.teleportToLocation(selected, ((Player) sender).getLocation());
-            sender.sendMessage(Component.text(ChatColor.GRAY + "NPC changed location."));
+            sender.sendMessage(ChatColor.GRAY + "NPC changed location.");
         }
 
         if (args[0].equalsIgnoreCase("setlook")) {
             if (args.length != 1) return false;
             NPC selected = npcManager.getSelectedNPC().get(sender);
             NPCUtil.setLook(selected, ((Player) sender).getLocation());
-            sender.sendMessage(Component.text(ChatColor.GRAY + "Made the NPC look at you."));
+            sender.sendMessage(ChatColor.GRAY + "Made the NPC look at you.");
         }
 
         if (args[0].equalsIgnoreCase("look")) {
             if (args.length != 1) return false;
             NPC selected = npcManager.getSelectedNPC().get(sender);
             NPCUtil.toggleLook(selected);
-            sender.sendMessage(Component.text(ChatColor.GRAY + "Toggled look."));
+            sender.sendMessage(ChatColor.GRAY + "Toggled look.");
         }
 
         if (args[0].equalsIgnoreCase("imitate")) {
             if (args.length != 1) return false;
             NPC selected = npcManager.getSelectedNPC().get(sender);
             NPCUtil.toggleImitate(selected);
-            sender.sendMessage(Component.text(ChatColor.GRAY + "Toggled imitate."));
+            sender.sendMessage(ChatColor.GRAY + "Toggled imitate.");
         }
 
         if (args[0].equalsIgnoreCase("togglehide")) {
@@ -166,7 +164,7 @@ public class CommandHandler implements CommandExecutor {
             if (selected.isShownFor((Player) sender)) selected.addExcludedPlayer((Player) sender);
             else selected.removeExcludedPlayer((Player) sender);
             fileManager.saveNPC(id, selected, snpc, false);
-            sender.sendMessage(Component.text(ChatColor.GRAY + "NPC: " + id + " toggled hide."));
+            sender.sendMessage(ChatColor.GRAY + "NPC: " + id + " toggled hide.");
         }
 
         if (args[0].equalsIgnoreCase("tp")) {
@@ -183,7 +181,7 @@ public class CommandHandler implements CommandExecutor {
             NPC npc = npcManager.getNpcs().inverse().get(id);
             if (selected != null && selected.getEntityId() == npc.getEntityId()) return false;
             npcManager.getSelectedNPC().put((Player) sender, npc);
-            sender.sendMessage(Component.text(ChatColor.YELLOW + "You have selected NPC: " + id));
+            sender.sendMessage(ChatColor.YELLOW + "You have selected NPC: " + id);
         }
 
         if (args[0].equalsIgnoreCase("info")) {
@@ -193,9 +191,9 @@ public class CommandHandler implements CommandExecutor {
             Integer id = npcManager.getNpcs().get(selected);
             SNPC snpc = npcManager.getSnpcs().get(id);
             if (snpc == null) return false;
-            sender.sendMessage(Component.text(ChatColor.DARK_AQUA + "--NPC Info--"));
-            sender.sendMessage(Component.text(ChatColor.DARK_AQUA + "ID: " + id));
-            sender.sendMessage(Component.text(ChatColor.DARK_AQUA + "Internal ID: " + selected.getEntityId()));
+            sender.sendMessage(ChatColor.DARK_AQUA + "--NPC Info--");
+            sender.sendMessage(ChatColor.DARK_AQUA + "ID: " + id);
+            sender.sendMessage(ChatColor.DARK_AQUA + "Internal ID: " + selected.getEntityId());
         }
 
         if (args[0].equalsIgnoreCase("equipmentslots")) {

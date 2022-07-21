@@ -10,7 +10,6 @@ import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.event.PlayerNPCInteractEvent;
 import com.github.juliarn.npc.event.PlayerNPCShowEvent;
 import com.github.juliarn.npc.modifier.MetadataModifier;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -47,11 +46,12 @@ public class NPCListener implements Listener {
 
             EquipmentSlot es = EquipmentSlot.valueOf(hand == PlayerNPCInteractEvent.Hand.MAIN_HAND ? "HAND" : hand.toString());
             EntityEquipment ee = player.getEquipment();
+            if (ee == null) return;
             if (ee.getItem(es).getType() != Material.STICK) return;
             NPC selected = npcManager.getSelectedNPC().get(player);
             if (selected != null && selected.getEntityId() == npc.getEntityId()) return;
             npcManager.getSelectedNPC().put(player, npc);
-            player.sendMessage(Component.text(ChatColor.YELLOW + "You have selected NPC: " + id));
+            player.sendMessage(ChatColor.YELLOW + "You have selected NPC: " + id);
         }
 
         if (action == PlayerNPCInteractEvent.EntityUseAction.INTERACT_AT) {
