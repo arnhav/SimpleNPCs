@@ -1,9 +1,9 @@
-package com.ags.simplenpcs.data;
+package com.github.arnhav.data;
 
-import com.ags.simplenpcs.NPCManager;
-import com.ags.simplenpcs.SimpleNPCs;
-import com.ags.simplenpcs.objects.NPCEquipmentSlot;
-import com.ags.simplenpcs.objects.SNPC;
+import com.github.arnhav.NPCManager;
+import com.github.arnhav.SimpleNPCs;
+import com.github.arnhav.objects.NPCEquipmentSlot;
+import com.github.arnhav.objects.SNPC;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.profile.Profile;
 import org.bukkit.Bukkit;

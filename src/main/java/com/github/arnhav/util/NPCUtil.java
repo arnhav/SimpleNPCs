@@ -1,7 +1,7 @@
-package com.ags.simplenpcs.util;
+package com.github.arnhav.util;
 
-import com.ags.simplenpcs.SimpleNPCs;
-import com.ags.simplenpcs.objects.SNPC;
+import com.github.arnhav.SimpleNPCs;
+import com.github.arnhav.objects.SNPC;
 import com.github.juliarn.npc.NPC;
 import org.bukkit.Location;
 

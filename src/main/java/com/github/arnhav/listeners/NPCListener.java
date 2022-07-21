@@ -1,11 +1,11 @@
-package com.ags.simplenpcs.listeners;
+package com.github.arnhav.listeners;
 
-import com.ags.simplenpcs.NPCManager;
-import com.ags.simplenpcs.api.NPCLeftClickEvent;
-import com.ags.simplenpcs.api.NPCRightClickEvent;
-import com.ags.simplenpcs.objects.NPCEquipmentSlot;
-import com.ags.simplenpcs.objects.SNPC;
-import com.ags.simplenpcs.util.ItemUtils;
+import com.github.arnhav.NPCManager;
+import com.github.arnhav.api.NPCLeftClickEvent;
+import com.github.arnhav.api.NPCRightClickEvent;
+import com.github.arnhav.objects.NPCEquipmentSlot;
+import com.github.arnhav.objects.SNPC;
+import com.github.arnhav.util.ItemUtils;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.event.PlayerNPCInteractEvent;
 import com.github.juliarn.npc.event.PlayerNPCShowEvent;

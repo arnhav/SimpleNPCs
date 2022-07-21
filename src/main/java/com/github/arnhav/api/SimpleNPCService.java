@@ -1,6 +1,6 @@
-package com.ags.simplenpcs.api;
+package com.github.arnhav.api;
 
-import com.ags.simplenpcs.objects.SNPC;
+import com.github.arnhav.objects.SNPC;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.profile.Profile;
 import org.bukkit.Location;

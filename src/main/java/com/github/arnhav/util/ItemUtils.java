@@ -1,4 +1,4 @@
-package com.ags.simplenpcs.util;
+package com.github.arnhav.util;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;

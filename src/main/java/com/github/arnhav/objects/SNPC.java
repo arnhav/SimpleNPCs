@@ -1,4 +1,4 @@
-package com.ags.simplenpcs.objects;
+package com.github.arnhav.objects;
 
 import java.util.HashMap;
 

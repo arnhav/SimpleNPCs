@@ -1,11 +1,11 @@
-package com.ags.simplenpcs;
+package com.github.arnhav;
 
-import com.ags.simplenpcs.api.SimpleNPCService;
-import com.ags.simplenpcs.commands.CommandHandler;
-import com.ags.simplenpcs.data.FileManager;
-import com.ags.simplenpcs.listeners.NPCListener;
-import com.ags.simplenpcs.objects.SNPC;
-import com.ags.simplenpcs.util.NPCUtil;
+import com.github.arnhav.api.SimpleNPCService;
+import com.github.arnhav.commands.CommandHandler;
+import com.github.arnhav.data.FileManager;
+import com.github.arnhav.listeners.NPCListener;
+import com.github.arnhav.objects.SNPC;
+import com.github.arnhav.util.NPCUtil;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.profile.Profile;
 import org.bukkit.Location;

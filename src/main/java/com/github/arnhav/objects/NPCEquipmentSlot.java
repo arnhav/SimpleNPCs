@@ -1,4 +1,4 @@
-package com.ags.simplenpcs.objects;
+package com.github.arnhav.objects;
 
 public enum NPCEquipmentSlot {
 

@@ -1,4 +1,4 @@
-package com.ags.simplenpcs.api;
+package com.github.arnhav.api;
 
 import com.github.juliarn.npc.NPC;
 import org.bukkit.entity.Player;

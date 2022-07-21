@@ -1,12 +1,12 @@
-package com.ags.simplenpcs.commands;
+package com.github.arnhav.commands;
 
-import com.ags.simplenpcs.NPCManager;
-import com.ags.simplenpcs.SimpleNPCs;
-import com.ags.simplenpcs.data.FileManager;
-import com.ags.simplenpcs.objects.NPCEquipmentSlot;
-import com.ags.simplenpcs.objects.SNPC;
-import com.ags.simplenpcs.util.ItemUtils;
-import com.ags.simplenpcs.util.NPCUtil;
+import com.github.arnhav.NPCManager;
+import com.github.arnhav.SimpleNPCs;
+import com.github.arnhav.data.FileManager;
+import com.github.arnhav.objects.NPCEquipmentSlot;
+import com.github.arnhav.objects.SNPC;
+import com.github.arnhav.util.ItemUtils;
+import com.github.arnhav.util.NPCUtil;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.profile.Profile;
 import org.bukkit.Bukkit;

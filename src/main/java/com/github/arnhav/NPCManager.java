@@ -1,6 +1,6 @@
-package com.ags.simplenpcs;
+package com.github.arnhav;
 
-import com.ags.simplenpcs.objects.SNPC;
+import com.github.arnhav.objects.SNPC;
 import com.github.juliarn.npc.NPC;
 import com.github.juliarn.npc.NPCPool;
 import com.github.juliarn.npc.profile.Profile;

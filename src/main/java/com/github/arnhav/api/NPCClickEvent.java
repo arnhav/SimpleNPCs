@@ -1,22 +1,17 @@
-package com.ags.simplenpcs.api;
+package com.github.arnhav.api;
 
 import com.github.juliarn.npc.NPC;
+import com.github.juliarn.npc.event.PlayerNPCEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class NPCLeftClickEvent extends NPCClickEvent {
+public class NPCClickEvent extends PlayerNPCEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private boolean isCancelled;
 
-    /**
-     * Constructs a new event instance.
-     *
-     * @param who The player involved in this event
-     * @param npc The npc involved in this event
-     */
-    public NPCLeftClickEvent(Player who, NPC npc) {
+    public NPCClickEvent(Player who, NPC npc) {
         super(who, npc);
     }
 
