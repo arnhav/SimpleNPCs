@@ -1,6 +1,6 @@
 name: SimpleNPCs
 version: ${project.version}
-main: com.ags.simplenpcs.SimpleNPCs
+main: com.github.arnhav.SimpleNPCs
 api-version: 1.18
 depend: [ ProtocolLib ]
 authors: [ Tyrriel ]
